@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 public class Minesweeper extends Application
 {
 	private static final int NUMBER_OF_ROWS = 20;
-	private static final int NUMBER_OF_COLUMNS = 40;
-	private static final int PADDING = 10;
+	private static final int NUMBER_OF_COLUMNS = 30;
+	private static final int PADDING = 1;
 	
 	/**
 	 * Launches the application.
@@ -27,21 +27,43 @@ public class Minesweeper extends Application
     }
 	
     @Override
-    public void start(Stage pPrimaryStage) 
+    public void start(Stage pStage) 
     {
-    	pPrimaryStage.setTitle("Minesweeper");
-    	GridPane root = new GridPane();
+    	prepareStage(pStage);
+        pStage.setScene(createScene());
+        pStage.show();
+    }
+    
+    private void prepareStage(Stage pStage) 
+	{
+    	pStage.setTitle("Minesweeper");
+    	pStage.setResizable(false);
+	}
+	
+	private Scene createScene() 
+	{
+		GridPane root = new GridPane();
+		root.setHgap(1);
+		root.setVgap(1);
     	root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(PADDING));
     	for( int columnIndex = 0; columnIndex < NUMBER_OF_COLUMNS; columnIndex++)
     	{
     		for( int rowIndex = 0; rowIndex < NUMBER_OF_ROWS; rowIndex++)
     		{
-    			root.add(new Button(), columnIndex, rowIndex);
+    			root.add(createCellButton(), columnIndex, rowIndex);
     		}
     	}
-    	pPrimaryStage.setResizable(false);
-        pPrimaryStage.setScene(new Scene(root));
-        pPrimaryStage.show();
-    }
+		return new Scene(root);
+	}
+	
+	private Button createCellButton()
+	{
+		Button button = new Button();
+		button.setMinHeight(0);
+		button.setMinWidth(0);
+		button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
+				"-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
+		return button;
+	}
 }
