@@ -32,6 +32,7 @@ public class Minesweeper extends Application
     	prepareStage(pStage);
         pStage.setScene(createScene());
         pStage.show();
+       	setFocus(pStage);
     }
     
     private void prepareStage(Stage pStage) 
@@ -65,5 +66,14 @@ public class Minesweeper extends Application
 		button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
 				"-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
 		return button;
+	}
+	
+	/*
+	 * By default the GUI focus highlight is set on the top-left button.
+	 * This method fixes this by setting the focus on the entire layout.
+	 */
+	private void setFocus(Stage pStage)
+	{
+        pStage.getScene().getRoot().requestFocus();
 	}
 }
