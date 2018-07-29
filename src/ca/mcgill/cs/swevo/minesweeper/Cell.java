@@ -2,8 +2,11 @@ package ca.mcgill.cs.swevo.minesweeper;
 
 public class Cell
 {
-	public boolean isOpen() {
-		return false;
+	private boolean aIsOpen = false; 
+	
+	public boolean isOpen() 
+	{
+		return aIsOpen;
 	}
 
 	public boolean isBomb() {
