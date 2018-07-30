@@ -66,19 +66,6 @@ public class Position
 		return aColumnIndex == other.aColumnIndex && aRowIndex == other.aRowIndex;
 	}
 	
-	public boolean isNeighbour(Position pPosition)
-	{
-		if( equals(pPosition ))
-		{
-			return false;
-		}
-		else
-		{
-			return pPosition.getColumn() >= getColumn() -1 && pPosition.getColumn() <= getColumn() +1 &&
-					pPosition.getRow() >= getRow() - 1 && pPosition.getRow() <= getRow() + 1;
-		}
-	}
-	
 	public List<Position> getNeighbours(int pRows, int pColumns)
 	{
 		List<Position> neighbours = new ArrayList<>();

@@ -37,7 +37,6 @@ public class Minesweeper extends Application
     	createScene();
         newGame();
         refresh();
-    	aMinefield.addObserver(()-> refresh());
         pStage.setScene(new Scene(aRoot));
         pStage.show();
        	setFocus(pStage);
@@ -88,11 +87,11 @@ public class Minesweeper extends Application
 		{
 			button.setText("!");
 		}
-		button.setOnAction(e-> aMinefield.reveal(pPosition)); 
+		button.setOnAction(e-> {aMinefield.reveal(pPosition); refresh();}); 
 		button.setOnMouseClicked( e-> {
 			if( e.getButton() == MouseButton.SECONDARY )
 			{
-				aMinefield.toggleMark(pPosition);
+				aMinefield.toggleMark(pPosition); refresh();
 			}
 		});
 		return button;

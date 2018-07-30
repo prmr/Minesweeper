@@ -21,11 +21,6 @@ public class Cell
 		return aIsMarked;
 	}
 	
-	public boolean isUndiscovered()
-	{
-		return aIsHidden && isMined() && !aIsMarked;
-	}
-	
 	public void toggleMark()
 	{
 		aIsMarked = !aIsMarked;

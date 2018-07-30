@@ -7,7 +7,6 @@ import java.util.List;
 public class Minefield
 {
 	private Cell[][] aCells;
-	private final List<MinefieldObserver> aObservers = new ArrayList<>();
 	
 	public Minefield(int pRows, int pColumns, int pMines)
 	{
@@ -62,44 +61,22 @@ public class Minefield
 		return aCells[0].length;
 	}
 	
-	public void addObserver(MinefieldObserver pObserver)
-	{
-		aObservers.add(pObserver);
-	}
-	
-	private void notifyObservers()
-	{
-		for( MinefieldObserver observer : aObservers )
-		{
-			observer.cellRevealed();
-		}
-	}
-	
 	public void reveal(Position pPosition)
 	{
 		getCell(pPosition).reveal();
 		autoReveal(pPosition);
-		notifyObservers();
 	}
 	
 	private void autoReveal(Position pPosition)
 	{
-		int hiddenMines = 0;
-		for( Position neighbour : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()))
+		if( getNumberOfMinedNeighbours(pPosition) == 0)
 		{
-			if( getCell(neighbour).isUndiscovered() )
+			for( Position neighbour : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()))
 			{
-				hiddenMines++;
-			}
-		}
-		if( hiddenMines == 0 )
-		{
-			for( Position position : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()))
-			{
-				if(getCell(position).isHidden() && !getCell(position).isMarked() )
+				if(getCell(neighbour).isHidden() && !getCell(neighbour).isMarked() )
 				{
-					getCell(position).reveal();
-					autoReveal(position);
+					getCell(neighbour).reveal();
+					autoReveal(neighbour);
 				}
 			}
 		}
@@ -109,7 +86,6 @@ public class Minefield
 	{
 		getCell(pPosition).toggleMark();
 		autoReveal(pPosition);
-		notifyObservers();
 	}
 	
 	public Iterable<Position> getHiddenPositions()
