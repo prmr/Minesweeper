@@ -2,14 +2,26 @@ package ca.mcgill.cs.swevo.minesweeper;
 
 public class Cell
 {
-	private boolean aIsOpen = false; 
+	private boolean aIsHidden = true; 
+	private boolean aIsBomb;
 	
-	public boolean isOpen() 
+	public Cell(boolean pIsBomb)
 	{
-		return aIsOpen;
+		aIsBomb = pIsBomb;
+	}
+	
+	public boolean isHidden() 
+	{
+		return aIsHidden;
+	}
+	
+	public void reveal()
+	{
+		aIsHidden = false;
 	}
 
-	public boolean isBomb() {
-		return false; //TODO
+	public boolean isBomb() 
+	{
+		return aIsBomb;
 	}
 }
