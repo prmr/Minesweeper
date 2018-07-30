@@ -1,12 +1,14 @@
 package ca.mcgill.cs.swevo.minesweeper;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -52,7 +54,7 @@ public class Minesweeper extends Application
     
     private void newGame()
     {
-    	aMinefield = new Minefield(20, 20, 50);
+    	aMinefield = new Minefield(16, 16, 20);
     	refresh();
     }
     
@@ -67,11 +69,11 @@ public class Minesweeper extends Application
     	GameStatus status = aMinefield.getGameStatus();
     	if( status == GameStatus.WON )
     	{
-    		aStatusBar.setText("You won!");
+    		aStatusBar.setText("You won! Press Enter to play again");
     	}
     	else if( status == GameStatus.LOST )
     	{
-    		aStatusBar.setText("You lost");
+    		aStatusBar.setText("You lost. Press Enter to try again");
     	}
     	else
     	{
@@ -92,6 +94,21 @@ public class Minesweeper extends Application
 		aGrid.setVgap(1);
 		aGrid.setAlignment(Pos.CENTER);
 		aGrid.setPadding(new Insets(PADDING));
+		
+		root.setOnKeyTyped(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(final KeyEvent pEvent)
+			{
+				if( pEvent.getCharacter().equals("\r"))
+				{
+					newGame();
+					refresh();
+				}
+				pEvent.consume();
+			}
+		});
+		 
 		return new Scene(root);
 	}
 	
