@@ -1,8 +1,5 @@
 package ca.mcgill.cs.swevo.minesweeper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Position
 {
 	private final int aRowIndex;
@@ -24,19 +21,6 @@ public class Position
 		return aColumnIndex;
 	}
 	
-	public static List<Position> all(int pRows, int pColumns)
-	{
-		List<Position> positions = new ArrayList<>(pRows * pColumns);
-		for( int row = 0; row < pRows; row++)
-		{
-			for( int column = 0; column < pColumns; column++)
-			{
-				positions.add(new Position(row, column));
-			}
-		}
-		return positions;
-	}
-
 	@Override
 	public int hashCode()
 	{
@@ -64,18 +48,5 @@ public class Position
 		}
 		Position other = (Position) pObject;
 		return aColumnIndex == other.aColumnIndex && aRowIndex == other.aRowIndex;
-	}
-	
-	public List<Position> getNeighbours(int pRows, int pColumns)
-	{
-		List<Position> neighbours = new ArrayList<>();
-		for( int row = Math.max(0, getRow() -1); row <= Math.min(pRows-1, getRow()+1); row++)
-		{
-			for( int column = Math.max(0, getColumn()-1); column <= Math.min(pColumns-1, getColumn()+1); column++)
-			{
-				neighbours.add(new Position(row, column));
-			}
-		}
-		return neighbours;
 	}
 }

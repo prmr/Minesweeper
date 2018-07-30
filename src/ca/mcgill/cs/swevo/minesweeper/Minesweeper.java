@@ -3,6 +3,7 @@ package ca.mcgill.cs.swevo.minesweeper;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -39,7 +40,7 @@ public class Minesweeper extends Application
         refresh();
         pStage.setScene(new Scene(aRoot));
         pStage.show();
-       	setFocus(pStage);
+        aRoot.requestFocus();
     }
     
     private void prepareStage(Stage pStage) 
@@ -56,13 +57,11 @@ public class Minesweeper extends Application
     
     private void refresh()
     {
-    	for( Position position : aMinefield.getHiddenPositions() )
+    	aRoot.getChildren().clear();
+    	aRoot.requestFocus();
+    	for( Position position : aMinefield.getAllPositions() )
     	{
-    		aRoot.add(createHiddenTile(position), position.getColumn(), position.getRow());
-    	}
-    	for( Position position : aMinefield.getRevealedPositions() )
-    	{
-    		aRoot.add(createRevealedTile(position), position.getColumn(), position.getRow());
+    		aRoot.add(createTile(position), position.getColumn(), position.getRow());
     	}
     }
 	
@@ -75,7 +74,24 @@ public class Minesweeper extends Application
 		aRoot.setPadding(new Insets(PADDING));
 	}
 	
-	private Button createHiddenTile(Position pPosition)
+	private Node createTile(Position pPosition)
+	{
+		CellStatus status = aMinefield.getStatus(pPosition);
+		if( status == CellStatus.MARKED )
+		{
+			return createHiddenTile(pPosition, true);
+		}
+		else if( status == CellStatus.HIDDEN )
+		{
+			return createHiddenTile(pPosition, false);
+		}
+		else
+		{
+			return createRevealedTile(pPosition, status);
+		}
+	}
+	
+	private Button createHiddenTile(Position pPosition, boolean pMarked)
 	{
 		Button button = new Button();
 		
@@ -83,7 +99,7 @@ public class Minesweeper extends Application
 		button.setMinWidth(0);
 		button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
 				"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12; -fx-text-fill: red; -fx-font-weight: bold");
-		if( aMinefield.isMarked(pPosition))
+		if( pMarked)
 		{
 			button.setText("!");
 		}
@@ -97,38 +113,25 @@ public class Minesweeper extends Application
 		return button;
 	}
 	
-	private Label createRevealedTile(Position pPosition)
+	private Label createRevealedTile(Position pPosition, CellStatus pStatus)
 	{
 		Label tile = new Label();
 		tile.setMinSize(0, 0);
 		tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
 		tile.setAlignment(Pos.CENTER);
 		tile.setFont(new Font("Arial", 14));
-		if( aMinefield.isMined(pPosition))
+		if( pStatus == CellStatus.MINE )
 		{
 			tile.setText("X");
 		}
+		else if( pStatus == CellStatus.CLEAR )
+		{
+			tile.setText(" ");
+		}
 		else
 		{
-			int neighbours = aMinefield.getNumberOfMinedNeighbours(pPosition);
-			if( neighbours == 0 )
-			{
-				tile.setText(" ");
-			}
-			else
-			{
-				tile.setText(Integer.toString(neighbours));
-			}
+			tile.setText(Integer.toString(aMinefield.getNumberOfMinedNeighbours(pPosition)));
 		}
 		return tile;
-	}
-	
-	/*
-	 * By default the GUI focus highlight is set on the top-left button.
-	 * This method fixes this by setting the focus on the entire layout.
-	 */
-	private void setFocus(Stage pStage)
-	{
-        pStage.getScene().getRoot().requestFocus();
 	}
 }

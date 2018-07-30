@@ -7,12 +7,19 @@ import java.util.List;
 public class Minefield
 {
 	private Cell[][] aCells;
+	private final ArrayList<Position> aAllPositions = new ArrayList<>();
 	
 	public Minefield(int pRows, int pColumns, int pMines)
 	{
 		aCells = new Cell[pRows][pColumns];
 		initialize();
 		placeMines(pMines);
+		computeNeighbourhoods();
+	}
+	
+	public Iterable<Position> getAllPositions()
+	{
+		return aAllPositions;
 	}
 	
 	private void initialize()
@@ -22,8 +29,22 @@ public class Minefield
 			for( int column = 0; column < aCells[0].length; column++)
 			{
 				aCells[row][column] = new Cell();
+				aAllPositions.add(new Position(row, column));
 			}
 		}
+	}
+	
+	private void computeNeighbourhoods()
+	{
+		for( Position position : aAllPositions )
+		{
+			getCell(position).setNeighbours(internalGetNumberOfMinedNeighbours(position));
+		}
+	}
+	
+	public CellStatus getStatus(Position pPosition)
+	{
+		return getCell(pPosition).getStatus();
 	}
 	
 	private Cell getCell(Position pPosition)
@@ -33,7 +54,7 @@ public class Minefield
 	
 	private void placeMines(int pNumberOfMines)
 	{
-		List<Position> positions = allPositions();
+		List<Position> positions = aAllPositions;
 		Collections.shuffle(positions);
 		for( int i = 0; i < pNumberOfMines; i++ )
 		{
@@ -41,37 +62,43 @@ public class Minefield
 		}
 	}
 	
-	public boolean isMarked(Position pPosition)
-	{
-		return getCell(pPosition).isMarked();
-	}
-	
-	private List<Position> allPositions()
-	{
-		return Position.all(getNumberOfRows(), getNumberOfColumns());
-	}
-	
-	public int getNumberOfRows()
+	private int getNumberOfRows()
 	{
 		return aCells.length;
 	}
 	
-	public int getNumberOfColumns()
+	private int getNumberOfColumns()
 	{
 		return aCells[0].length;
 	}
 	
 	public void reveal(Position pPosition)
 	{
-		getCell(pPosition).reveal();
-		autoReveal(pPosition);
+		Cell cell = getCell(pPosition);
+		if(cell.isMined())
+		{
+			revealAll();
+		}
+		else
+		{
+			cell.reveal();
+			autoReveal(pPosition);
+		}
+	}
+	
+	private void revealAll()
+	{
+		for( Position position : aAllPositions )
+		{
+			getCell(position).reveal();
+		}
 	}
 	
 	private void autoReveal(Position pPosition)
 	{
-		if( getNumberOfMinedNeighbours(pPosition) == 0)
+		if( internalGetNumberOfMinedNeighbours(pPosition) == 0)
 		{
-			for( Position neighbour : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()))
+			for( Position neighbour : getNeighbours(pPosition))
 			{
 				if(getCell(neighbour).isHidden() && !getCell(neighbour).isMarked() )
 				{
@@ -85,44 +112,12 @@ public class Minefield
 	public void toggleMark(Position pPosition)
 	{
 		getCell(pPosition).toggleMark();
-		autoReveal(pPosition);
 	}
 	
-	public Iterable<Position> getHiddenPositions()
-	{
-		List<Position> positions = new ArrayList<>();
-		for( Position position : allPositions() )
-		{
-			if( getCell(position).isHidden() )
-			{
-				positions.add(position);
-			}
-		}
-		return positions;
-	}
-	
-	public Iterable<Position> getRevealedPositions()
-	{
-		List<Position> positions = new ArrayList<>();
-		for( Position position : allPositions() )
-		{
-			if( !getCell(position).isHidden() )
-			{
-				positions.add(position);
-			}
-		}
-		return positions;
-	}
-	
-	public boolean isMined(Position pPosition)
-	{
-		return getCell(pPosition).isMined();
-	}
-	
-	public int getNumberOfMinedNeighbours(Position pPosition)
+	private int internalGetNumberOfMinedNeighbours(Position pPosition)
 	{
 		int total = 0;
-		for( Position neighbour : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()) )
+		for( Position neighbour : getNeighbours(pPosition) )
 		{
 			if( getCell(neighbour).isMined())
 			{
@@ -130,5 +125,27 @@ public class Minefield
 			}
 		}
 		return total;
+	}
+	
+	public int getNumberOfMinedNeighbours(Position pPosition)
+	{
+		return getCell(pPosition).getNumberOfNeighbours();
+	}
+	
+	private List<Position> getNeighbours(Position pPosition)
+	{
+		List<Position> neighbours = new ArrayList<>();
+		for( int row = Math.max(0, pPosition.getRow() -1); row <= Math.min(getNumberOfRows()-1, pPosition.getRow()+1); row++)
+		{
+			for( int column = Math.max(0, pPosition.getColumn()-1); column <= Math.min(getNumberOfColumns()-1, pPosition.getColumn()+1); column++)
+			{
+				Position position = new Position(row, column);
+				if( !position.equals(pPosition))
+				{
+					neighbours.add(position);
+				}
+			}
+		}
+		return neighbours;
 	}
 }
