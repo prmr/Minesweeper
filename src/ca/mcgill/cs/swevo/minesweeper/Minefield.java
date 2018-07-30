@@ -22,6 +22,66 @@ public class Minefield
 		return aAllPositions;
 	}
 	
+	public GameStatus getGameStatus()
+	{
+		GameStatus status = GameStatus.IN_PLAY; // Default
+		int totalMines = 0;
+		int markedMines = 0;
+		for( Position position : aAllPositions )
+		{
+			Cell cell = getCell(position);
+			if( cell.isMined() )
+			{
+				totalMines++;
+				if( !cell.isHidden())
+				{
+					status = GameStatus.LOST;
+					break;
+				}
+				else
+				{
+					if( cell.isMarked() )
+					{
+						markedMines++;
+					}
+				}
+			}
+		}
+		if( status == GameStatus.LOST )
+		{
+			return status;
+		}
+		else if( totalMines == markedMines )
+		{
+			return GameStatus.WON;
+		}
+		else
+		{
+			return GameStatus.IN_PLAY;
+		}
+	}
+	
+	/**
+	 * @return According to the user.
+	 */
+	public int getNumberOfMinesLeft()
+	{
+		int totalMines = 0;
+		int totalMarks = 0;
+		for( Position position : aAllPositions )
+		{
+			if( getCell(position).isMined() )
+			{
+				totalMines++;
+			}
+			if( getCell(position).isMarked() )
+			{
+				totalMarks++;
+			}
+		}
+		return totalMines - totalMarks;
+	}
+	
 	private void initialize()
 	{
 		for( int row = 0; row < aCells.length; row++)

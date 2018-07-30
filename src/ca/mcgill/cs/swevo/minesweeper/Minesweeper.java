@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -20,7 +21,8 @@ public class Minesweeper extends Application
 	private static final int PADDING = 1;
 	
 	private Minefield aMinefield;
-	private GridPane aRoot;
+	private GridPane aGrid;
+	private Label aStatusBar;
 	
 	/**
 	 * Launches the application.
@@ -35,12 +37,11 @@ public class Minesweeper extends Application
     public void start(Stage pStage) 
     {
     	prepareStage(pStage);
-    	createScene();
+        pStage.setScene(createScene());
         newGame();
         refresh();
-        pStage.setScene(new Scene(aRoot));
         pStage.show();
-        aRoot.requestFocus();
+        aGrid.requestFocus();
     }
     
     private void prepareStage(Stage pStage) 
@@ -57,21 +58,41 @@ public class Minesweeper extends Application
     
     private void refresh()
     {
-    	aRoot.getChildren().clear();
-    	aRoot.requestFocus();
+    	aGrid.getChildren().clear();
+    	aGrid.requestFocus();
     	for( Position position : aMinefield.getAllPositions() )
     	{
-    		aRoot.add(createTile(position), position.getColumn(), position.getRow());
+    		aGrid.add(createTile(position), position.getColumn(), position.getRow());
+    	}
+    	GameStatus status = aMinefield.getGameStatus();
+    	if( status == GameStatus.WON )
+    	{
+    		aStatusBar.setText("You won!");
+    	}
+    	else if( status == GameStatus.LOST )
+    	{
+    		aStatusBar.setText("You lost");
+    	}
+    	else
+    	{
+    		aStatusBar.setText(aMinefield.getNumberOfMinesLeft() + " mines left");
     	}
     }
 	
-	private void createScene() 
+	private Scene createScene() 
 	{
-		aRoot = new GridPane();
-		aRoot.setHgap(1);
-		aRoot.setVgap(1);
-		aRoot.setAlignment(Pos.CENTER);
-		aRoot.setPadding(new Insets(PADDING));
+		BorderPane root = new BorderPane();
+		aStatusBar = new Label();
+		aStatusBar.setFont(new Font("Arial", 16));
+		BorderPane.setMargin(aStatusBar, new Insets(5, 0, 0, 8));
+		root.setTop(aStatusBar);
+		aGrid = new GridPane();
+		root.setCenter(aGrid);
+		aGrid.setHgap(1);
+		aGrid.setVgap(1);
+		aGrid.setAlignment(Pos.CENTER);
+		aGrid.setPadding(new Insets(PADDING));
+		return new Scene(root);
 	}
 	
 	private Node createTile(Position pPosition)
