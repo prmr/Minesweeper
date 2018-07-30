@@ -3,12 +3,8 @@ package ca.mcgill.cs.swevo.minesweeper;
 public class Cell
 {
 	private boolean aIsHidden = true; 
-	private boolean aIsBomb;
-	
-	public Cell(boolean pIsBomb)
-	{
-		aIsBomb = pIsBomb;
-	}
+	private boolean aIsMined;
+	private boolean aIsMarked = false;
 	
 	public boolean isHidden() 
 	{
@@ -19,9 +15,29 @@ public class Cell
 	{
 		aIsHidden = false;
 	}
-
-	public boolean isBomb() 
+	
+	public boolean isMarked()
 	{
-		return aIsBomb;
+		return aIsMarked;
+	}
+	
+	public boolean isUndiscovered()
+	{
+		return aIsHidden && isMined() && !aIsMarked;
+	}
+	
+	public void toggleMark()
+	{
+		aIsMarked = !aIsMarked;
+	}
+
+	public boolean isMined() 
+	{
+		return aIsMined;
+	}
+	
+	public void mine()
+	{
+		aIsMined = true;
 	}
 }

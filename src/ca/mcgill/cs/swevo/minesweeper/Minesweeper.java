@@ -3,14 +3,12 @@ package ca.mcgill.cs.swevo.minesweeper;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -18,8 +16,6 @@ import javafx.stage.Stage;
  */
 public class Minesweeper extends Application
 {
-	private static final int NUMBER_OF_ROWS = 20;
-	private static final int NUMBER_OF_COLUMNS = 30;
 	private static final int PADDING = 1;
 	
 	private Minefield aMinefield;
@@ -55,18 +51,19 @@ public class Minesweeper extends Application
     
     private void newGame()
     {
-    	aMinefield = new Minefield(20, 10, 10);
+    	aMinefield = new Minefield(20, 20, 50);
     	refresh();
     }
     
     private void refresh()
     {
-    	for( int columnIndex = 0; columnIndex < aMinefield.getNumberOfColumns(); columnIndex++)
+    	for( Position position : aMinefield.getHiddenPositions() )
     	{
-    		for( int rowIndex = 0; rowIndex < aMinefield.getNumberOfRows(); rowIndex++)
-    		{
-    			aRoot.add(createTile(aMinefield.getView(columnIndex, rowIndex), columnIndex, rowIndex), columnIndex, rowIndex);
-    		}
+    		aRoot.add(createHiddenTile(position), position.getColumn(), position.getRow());
+    	}
+    	for( Position position : aMinefield.getRevealedPositions() )
+    	{
+    		aRoot.add(createRevealedTile(position), position.getColumn(), position.getRow());
     	}
     }
 	
@@ -79,59 +76,52 @@ public class Minesweeper extends Application
 		aRoot.setPadding(new Insets(PADDING));
 	}
 	
-	private Node createTile(CellView pView, int pColumn, int pRow)
+	private Button createHiddenTile(Position pPosition)
 	{
-		if( pView == CellView.Hidden )
+		Button button = new Button();
+		
+		button.setMinHeight(0);
+		button.setMinWidth(0);
+		button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
+				"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12; -fx-text-fill: red; -fx-font-weight: bold");
+		if( aMinefield.isMarked(pPosition))
 		{
-			Button button = new Button();
-			button.setMinHeight(0);
-			button.setMinWidth(0);
-			button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
-					"-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
-			button.setOnAction(e-> aMinefield.reveal(pColumn, pRow));
-			return button;
+			button.setText("!");
 		}
-		else if( pView == CellView.Bomb )
+		button.setOnAction(e-> aMinefield.reveal(pPosition)); 
+		button.setOnMouseClicked( e-> {
+			if( e.getButton() == MouseButton.SECONDARY )
+			{
+				aMinefield.toggleMark(pPosition);
+			}
+		});
+		return button;
+	}
+	
+	private Label createRevealedTile(Position pPosition)
+	{
+		Label tile = new Label();
+		tile.setMinSize(0, 0);
+		tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
+		tile.setAlignment(Pos.CENTER);
+		tile.setFont(new Font("Arial", 14));
+		if( aMinefield.isMined(pPosition))
 		{
-			Label tile = new Label("X");
-			tile.setMinSize(0, 0);
-			tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
-			tile.setAlignment(Pos.CENTER);
-			tile.setFont(new Font("Arial", 14));
-			return tile;
-		}
-		else if( pView == CellView.Zero )
-		{
-			Label tile = new Label(" ");
-			tile.setMinSize(0, 0);
-			tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
-			tile.setAlignment(Pos.CENTER);
-			tile.setFont(new Font("Arial", 14));
-			tile.setText(Integer.toString(pView.ordinal()-2));
-			return tile;
+			tile.setText("X");
 		}
 		else
 		{
-			Label tile = new Label();
-			tile.setMinSize(0, 0);
-			tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
-			tile.setAlignment(Pos.CENTER);
-			tile.setFont(new Font("Arial", 14));
-			tile.setText(Integer.toString(pView.ordinal()-2));
-			return tile;
+			int neighbours = aMinefield.getNumberOfMinedNeighbours(pPosition);
+			if( neighbours == 0 )
+			{
+				tile.setText(" ");
+			}
+			else
+			{
+				tile.setText(Integer.toString(neighbours));
+			}
 		}
-
-//		else if( pView == CellView.Bomb )
-//		{
-//			Text text = new Text();
-//			text.setFill(Color.RED);
-//			return text;
-//		}
-//		else
-//		{
-//			Text text = new Text(Integer.toString(pView.ordinal()-2));
-//			return text;
-//		}
+		return tile;
 	}
 	
 	/*

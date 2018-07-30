@@ -4,35 +4,62 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * An instance of this class is responsible for keeping 
- * track of the entire state of the game, which includes,
- * for each cell, whether it's a bomb or not, and whether its
- * revealed or not.
- */
 public class Minefield
 {
-	private final List<Cell> aCells;
-	private final int aNumberOfRows;
-	private final int aNumberOfColumns;
+	private Cell[][] aCells;
 	private final List<MinefieldObserver> aObservers = new ArrayList<>();
 	
-	public Minefield(int pNumberOfBombs, int pNumberOfRows, int pNumberOfColumns)
+	public Minefield(int pRows, int pColumns, int pMines)
 	{
-		aNumberOfColumns = pNumberOfColumns;
-		aNumberOfRows = pNumberOfRows;
-		aCells = new ArrayList<>(aNumberOfColumns * aNumberOfRows);
-		initializeCells(pNumberOfBombs);
+		aCells = new Cell[pRows][pColumns];
+		initialize();
+		placeMines(pMines);
+	}
+	
+	private void initialize()
+	{
+		for( int row = 0; row < aCells.length; row++)
+		{
+			for( int column = 0; column < aCells[0].length; column++)
+			{
+				aCells[row][column] = new Cell();
+			}
+		}
+	}
+	
+	private Cell getCell(Position pPosition)
+	{
+		return aCells[pPosition.getRow()][pPosition.getColumn()];
+	}
+	
+	private void placeMines(int pNumberOfMines)
+	{
+		List<Position> positions = allPositions();
+		Collections.shuffle(positions);
+		for( int i = 0; i < pNumberOfMines; i++ )
+		{
+			getCell(positions.get(i)).mine();
+		}
+	}
+	
+	public boolean isMarked(Position pPosition)
+	{
+		return getCell(pPosition).isMarked();
+	}
+	
+	private List<Position> allPositions()
+	{
+		return Position.all(getNumberOfRows(), getNumberOfColumns());
 	}
 	
 	public int getNumberOfRows()
 	{
-		return aNumberOfRows;
+		return aCells.length;
 	}
 	
 	public int getNumberOfColumns()
 	{
-		return aNumberOfColumns;
+		return aCells[0].length;
 	}
 	
 	public void addObserver(MinefieldObserver pObserver)
@@ -48,77 +75,84 @@ public class Minefield
 		}
 	}
 	
-	public void reveal(int pColumnNumber, int pRowNumber)
+	public void reveal(Position pPosition)
 	{
-		getCell(pColumnNumber, pRowNumber).reveal();
+		getCell(pPosition).reveal();
+		autoReveal(pPosition);
 		notifyObservers();
 	}
 	
-	public CellView getView(int pColumnNumber, int pRowNumber)
+	private void autoReveal(Position pPosition)
 	{
-		assert pColumnNumber >= 0 && pColumnNumber < aNumberOfColumns;
-		assert pRowNumber >= 0 && pRowNumber < aNumberOfRows;
-		if( getCell(pColumnNumber, pRowNumber ).isHidden() )
+		int hiddenMines = 0;
+		for( Position neighbour : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()))
 		{
-			return CellView.Hidden;
-		}
-		else
-		{
-			if( getCell(pColumnNumber, pRowNumber).isBomb() )
+			if( getCell(neighbour).isUndiscovered() )
 			{
-				return CellView.Bomb;
-			}
-			else
-			{
-				return CellView.fromNumber(getNumberOfBombsInNeighBourhood(pColumnNumber, pRowNumber));
+				hiddenMines++;
 			}
 		}
-	}
-	
-	private int getNumberOfBombsInNeighBourhood(int pColumnNumber, int pRowNumber)
-	{
-		List<Cell> neighbours = new ArrayList<>(8);
-		for(int columnNumber = Math.max(0, pColumnNumber-1); columnNumber < Math.min(aNumberOfColumns-1, pColumnNumber+1); columnNumber++)
+		if( hiddenMines == 0 )
 		{
-			for( int rowNumber = Math.max(0,  pRowNumber-1); rowNumber < Math.min(aNumberOfRows-1, pRowNumber+1); rowNumber++)
+			for( Position position : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()))
 			{
-				if( !(columnNumber == pColumnNumber && rowNumber == pRowNumber))
+				if(getCell(position).isHidden() && !getCell(position).isMarked() )
 				{
-					neighbours.add(getCell(columnNumber, rowNumber));
+					getCell(position).reveal();
+					autoReveal(position);
 				}
 			}
 		}
-		int sum = 0;
-		for( Cell cell : neighbours )
+	}
+	
+	public void toggleMark(Position pPosition)
+	{
+		getCell(pPosition).toggleMark();
+		autoReveal(pPosition);
+		notifyObservers();
+	}
+	
+	public Iterable<Position> getHiddenPositions()
+	{
+		List<Position> positions = new ArrayList<>();
+		for( Position position : allPositions() )
 		{
-			if( cell.isBomb() )
+			if( getCell(position).isHidden() )
 			{
-				sum++;
+				positions.add(position);
 			}
 		}
-		return sum;
+		return positions;
 	}
 	
-	private Cell getCell(int pColumnNumber, int pRowNumber)
+	public Iterable<Position> getRevealedPositions()
 	{
-		return aCells.get(pRowNumber * aNumberOfColumns + pColumnNumber);
-	}
-	
-	private int getCapacity()
-	{
-		return aNumberOfColumns * aNumberOfRows;
-	}
-	
-	private void initializeCells(int pNumberOfBombs)
-	{
-		for( int i = 0; i < pNumberOfBombs; i++ )
+		List<Position> positions = new ArrayList<>();
+		for( Position position : allPositions() )
 		{
-			aCells.add(new Cell(true));
+			if( !getCell(position).isHidden() )
+			{
+				positions.add(position);
+			}
 		}
-		for( int i = 0; i < getCapacity() - pNumberOfBombs; i++ )
+		return positions;
+	}
+	
+	public boolean isMined(Position pPosition)
+	{
+		return getCell(pPosition).isMined();
+	}
+	
+	public int getNumberOfMinedNeighbours(Position pPosition)
+	{
+		int total = 0;
+		for( Position neighbour : pPosition.getNeighbours(getNumberOfRows(), getNumberOfColumns()) )
 		{
-			aCells.add( new Cell(false));
+			if( getCell(neighbour).isMined())
+			{
+				total++;
+			}
 		}
-		Collections.shuffle(aCells);
+		return total;
 	}
 }
