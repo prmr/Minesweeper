@@ -2,28 +2,35 @@ package ca.mcgill.cs.swevo.minesweeper;
 
 public class Cell
 {
-	private boolean aIsHidden = true; 
 	private boolean aIsMined;
-	private boolean aIsMarked = false;
+	private CellInteractionStatus aInteractionStatus = CellInteractionStatus.HIDDEN;
 	
 	public boolean isHidden() 
 	{
-		return aIsHidden;
+		return aInteractionStatus == CellInteractionStatus.HIDDEN;
 	}
 	
 	public void reveal()
 	{
-		aIsHidden = false;
+		aInteractionStatus = CellInteractionStatus.REVEALED;
 	}
 	
 	public boolean isMarked()
 	{
-		return aIsMarked;
+		return aInteractionStatus == CellInteractionStatus.MARKED;
 	}
 	
 	public void toggleMark()
 	{
-		aIsMarked = !aIsMarked;
+		assert aInteractionStatus != CellInteractionStatus.REVEALED;
+		if(aInteractionStatus == CellInteractionStatus.MARKED)
+		{
+			aInteractionStatus = CellInteractionStatus.HIDDEN;
+		}
+		else
+		{
+			aInteractionStatus = CellInteractionStatus.MARKED;
+		}
 	}
 
 	public boolean isMined() 
