@@ -14,7 +14,6 @@ public class Minefield
 		aCells = new Cell[pRows][pColumns];
 		initialize();
 		placeMines(pMines);
-		computeNeighbourhoods();
 	}
 	
 	public Iterable<Position> getAllPositions()
@@ -94,17 +93,29 @@ public class Minefield
 		}
 	}
 	
-	private void computeNeighbourhoods()
-	{
-		for( Position position : aAllPositions )
-		{
-			getCell(position).setNeighbours(internalGetNumberOfMinedNeighbours(position));
-		}
-	}
-	
 	public CellStatus getStatus(Position pPosition)
 	{
-		return getCell(pPosition).getStatus();
+		Cell cell = getCell(pPosition);
+		if( cell.isMarked() )
+		{
+			return CellStatus.MARKED;
+		}
+		else if( cell.isHidden() )
+		{
+			return CellStatus.HIDDEN;
+		}
+		else if( cell.isMined() )
+		{
+			return CellStatus.MINE;
+		}
+		else if( internalGetNumberOfMinedNeighbours(pPosition) == 0)
+		{
+			return CellStatus.CLEAR;
+		}
+		else
+		{
+			return CellStatus.PROXIMITY;
+		}
 	}
 	
 	private Cell getCell(Position pPosition)
@@ -189,7 +200,7 @@ public class Minefield
 	
 	public int getNumberOfMinedNeighbours(Position pPosition)
 	{
-		return getCell(pPosition).getNumberOfNeighbours();
+		return internalGetNumberOfMinedNeighbours(pPosition);
 	}
 	
 	private List<Position> getNeighbours(Position pPosition)
