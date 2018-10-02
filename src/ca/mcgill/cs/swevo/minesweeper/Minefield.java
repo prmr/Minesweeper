@@ -93,28 +93,28 @@ public class Minefield
 		}
 	}
 	
-	public CellStatus getStatus(Position pPosition)
+	public CellView getStatus(Position pPosition)
 	{
 		Cell cell = getCell(pPosition);
 		if( cell.isMarked() )
 		{
-			return CellStatus.MARKED;
+			return CellView.MARKED;
 		}
 		else if( cell.isHidden() )
 		{
-			return CellStatus.HIDDEN;
+			return CellView.HIDDEN;
 		}
 		else if( cell.isMined() )
 		{
-			return CellStatus.MINE;
+			return CellView.MINE;
 		}
 		else if( internalGetNumberOfMinedNeighbours(pPosition) == 0)
 		{
-			return CellStatus.CLEAR;
+			return CellView.CLEAR;
 		}
 		else
 		{
-			return CellStatus.PROXIMITY;
+			return CellView.PROXIMITY;
 		}
 	}
 	

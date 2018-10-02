@@ -114,12 +114,12 @@ public class Minesweeper extends Application
 	
 	private Node createTile(Position pPosition)
 	{
-		CellStatus status = aMinefield.getStatus(pPosition);
-		if( status == CellStatus.MARKED )
+		CellView status = aMinefield.getStatus(pPosition);
+		if( status == CellView.MARKED )
 		{
 			return createHiddenTile(pPosition, true);
 		}
-		else if( status == CellStatus.HIDDEN )
+		else if( status == CellView.HIDDEN )
 		{
 			return createHiddenTile(pPosition, false);
 		}
@@ -151,18 +151,18 @@ public class Minesweeper extends Application
 		return button;
 	}
 	
-	private Label createRevealedTile(Position pPosition, CellStatus pStatus)
+	private Label createRevealedTile(Position pPosition, CellView pStatus)
 	{
 		Label tile = new Label();
 		tile.setMinSize(0, 0);
 		tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
 		tile.setAlignment(Pos.CENTER);
 		tile.setFont(new Font("Arial", 14));
-		if( pStatus == CellStatus.MINE )
+		if( pStatus == CellView.MINE )
 		{
 			tile.setText("X");
 		}
-		else if( pStatus == CellStatus.CLEAR )
+		else if( pStatus == CellView.CLEAR )
 		{
 			tile.setText(" ");
 		}

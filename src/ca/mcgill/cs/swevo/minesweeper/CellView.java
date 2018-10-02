@@ -5,7 +5,7 @@ package ca.mcgill.cs.swevo.minesweeper;
  * 
  * @author Martin P. Robillard
  */
-public enum CellStatus
+public enum CellView
 {
 	/**
 	 * The cell has been marked by the player as hiding a mine.
