@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 public class Minesweeper extends Application
 {
 	private static final int PADDING = 1;
-	private static final int NUMBER_OF_ROWS = 16;
-	private static final int NUMBER_OF_COLUMNS = 16;
+	private static final int NUMBER_OF_ROWS = 8;
+	private static final int NUMBER_OF_COLUMNS = 20;
 	private static final int NUMBER_OF_MINES = 20;
 	private static final int FONT_SIZE_STATUS_BAR = 16;
 	private static final int FONT_SIZE_STATUS_TILE = 14;
