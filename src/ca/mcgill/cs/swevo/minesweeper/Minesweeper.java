@@ -21,6 +21,19 @@ import javafx.stage.Stage;
 public class Minesweeper extends Application
 {
 	private static final int PADDING = 1;
+	private static final int NUMBER_OF_ROWS = 16;
+	private static final int NUMBER_OF_COLUMNS = 16;
+	private static final int NUMBER_OF_MINES = 20;
+	private static final int FONT_SIZE_STATUS_BAR = 16;
+	private static final int FONT_SIZE_STATUS_TILE = 14;
+	private static final Insets INSETS_STATUS_BAR = new Insets(5, 0, 0, 8);
+	private static final String TILE_STYLE_HIDDEN = 
+			"-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
+			"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12; " + 
+			"-fx-text-fill: red; -fx-font-weight: bold";
+	private static final String TILE_STYLE_REVEALED = 
+			"-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black;" +
+			"-fx-background-color: lightgrey;";
 	
 	private Minefield aMinefield;
 	private GridPane aGrid;
@@ -54,7 +67,7 @@ public class Minesweeper extends Application
     
     private void newGame()
     {
-    	aMinefield = new Minefield(16, 16, 20);
+    	aMinefield = new Minefield(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES);
     	refresh();
     }
     
@@ -85,8 +98,8 @@ public class Minesweeper extends Application
 	{
 		BorderPane root = new BorderPane();
 		aStatusBar = new Label();
-		aStatusBar.setFont(new Font("Arial", 16));
-		BorderPane.setMargin(aStatusBar, new Insets(5, 0, 0, 8));
+		aStatusBar.setFont(new Font("Arial", FONT_SIZE_STATUS_BAR));
+		BorderPane.setMargin(aStatusBar, INSETS_STATUS_BAR);
 		root.setTop(aStatusBar);
 		aGrid = new GridPane();
 		root.setCenter(aGrid);
@@ -130,8 +143,7 @@ public class Minesweeper extends Application
 		
 		button.setMinHeight(0);
 		button.setMinWidth(0);
-		button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
-				"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12; -fx-text-fill: red; -fx-font-weight: bold");
+		button.setStyle(TILE_STYLE_HIDDEN);
 		if( aMinefield.isMarked(pPosition))
 		{
 			button.setText("!");
@@ -154,9 +166,9 @@ public class Minesweeper extends Application
 	{
 		Label tile = new Label();
 		tile.setMinSize(0, 0);
-		tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
+		tile.setStyle(TILE_STYLE_REVEALED);
 		tile.setAlignment(Pos.CENTER);
-		tile.setFont(new Font("Arial", 14));
+		tile.setFont(new Font("Arial", FONT_SIZE_STATUS_TILE));
 		if( aMinefield.isMined(pPosition) )
 		{
 			tile.setText("X");
