@@ -1,25 +1,25 @@
 package ca.mcgill.cs.swevo.minesweeper;
 
 /**
- * Main abstract states for the game.
+ * Represents the current abstract state of a minefield.
  * 
  * @author Martin P. Robillard
  */
-public enum GameStatus
+public enum MinefieldStatus
 {
 	/**
 	 * One or more cells remain hidden.
 	 */
-	IN_PLAY, 
+	NOT_CLEARED, 
 	
 	/**
 	 * All the cells have been revealed, and the location of all mines
 	 * has been correctly marked.
 	 */
-	WON, 
+	CLEARED, 
 	
 	/**
 	 * At least one cell containing a mine has been revealed.
 	 */
-	LOST
+	EXPLODED
 }

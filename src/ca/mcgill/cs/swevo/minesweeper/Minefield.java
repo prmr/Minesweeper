@@ -4,26 +4,48 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A rectangular array of cells that can be mined
+ * and interacted with.
+ * 
+ * @author Martin P. Robillard
+ */
 public class Minefield
 {
 	private Cell[][] aCells;
 	private final ArrayList<Position> aAllPositions = new ArrayList<>();
 	
+	/**
+	 * Creates a new mine field with pRow and pColumns, 
+	 * which contains pMines randomly-distributed mines.
+	 * 
+	 * @param pRows The number of rows in the field.
+	 * @param pColumns The number of columns in the field.
+	 * @param pMines the number of mines in the field.
+	 * @pre pRows > 0 && pColumns > 0 && pMines >= 0 && pMines <= pColumns * pRows;
+	 */
 	public Minefield(int pRows, int pColumns, int pMines)
 	{
+		assert pRows > 0 && pColumns > 0 && pMines >= 0 && pMines <= pColumns * pRows;
 		aCells = new Cell[pRows][pColumns];
 		initialize();
 		placeMines(pMines);
 	}
 	
+	/**
+	 * @return An iterator over all positions in the mine field.
+	 */
 	public Iterable<Position> getAllPositions()
 	{
 		return aAllPositions;
 	}
 	
-	public GameStatus getGameStatus()
+	/**
+	 * @return A description of the current status of the mine field.
+	 */
+	public MinefieldStatus getStatus()
 	{
-		GameStatus status = GameStatus.IN_PLAY; // Default
+		MinefieldStatus status = MinefieldStatus.NOT_CLEARED; 
 		int totalMines = 0;
 		int markedMines = 0;
 		for( Position position : aAllPositions )
@@ -34,7 +56,7 @@ public class Minefield
 				totalMines++;
 				if( !cell.isHidden())
 				{
-					status = GameStatus.LOST;
+					status = MinefieldStatus.EXPLODED;
 					break;
 				}
 				else
@@ -46,22 +68,25 @@ public class Minefield
 				}
 			}
 		}
-		if( status == GameStatus.LOST )
+		if( status == MinefieldStatus.EXPLODED )
 		{
 			return status;
 		}
 		else if( totalMines == markedMines )
 		{
-			return GameStatus.WON;
+			return MinefieldStatus.CLEARED;
 		}
 		else
 		{
-			return GameStatus.IN_PLAY;
+			return MinefieldStatus.NOT_CLEARED;
 		}
 	}
 	
 	/**
-	 * @return According to the user.
+	 * The number of mines left is computed by subtracting the 
+	 * number of marked mines from the total number of mines.
+	 * 
+	 * @return The number of mines left according to the player.
 	 */
 	public int getNumberOfMinesLeft()
 	{
@@ -81,6 +106,86 @@ public class Minefield
 		return totalMines - totalMarks;
 	}
 	
+	/**
+	 * @param pPosition The position to query.
+	 * @return True if the cell at pPosition is revealed.
+	 * @pre pPosition != null
+	 */
+	public boolean isRevealed(Position pPosition)
+	{
+		assert pPosition != null;
+		return !getCell(pPosition).isHidden();
+	}
+	
+	/**
+	 * @param pPosition The position to query.
+	 * @return True if the cell at pPosition is marked.
+	 * @pre pPosition != null
+	 */
+	public boolean isMarked(Position pPosition)
+	{
+		assert pPosition != null;
+		return getCell(pPosition).isMarked();
+	}
+	
+	/**
+	 * @param pPosition The position to query.
+	 * @return True if the cell at pPosition is mined.
+	 * @pre pPosition != null
+	 */
+	public boolean isMined(Position pPosition)
+	{
+		assert pPosition != null;
+		return getCell(pPosition).isMined();
+	}
+	
+	/**
+	 * Reveal the cell at pPosition.
+	 * 
+	 * @param pPosition The position of the cell to reveal.
+	 * @pre pPosition != null;
+	 */
+	public void reveal(Position pPosition)
+	{
+		assert pPosition != null;
+		Cell cell = getCell(pPosition);
+		if(cell.isMined())
+		{
+			revealAll();
+		}
+		else
+		{
+			cell.reveal();
+			autoReveal(pPosition);
+		}
+	}
+	
+	/**
+	 * Toggle the mark at cell pPosition.
+	 * 
+	 * @param pPosition The position of the cell to mark/unmark.
+	 * @pre pPosition != null.
+	 */
+	public void toggleMark(Position pPosition)
+	{
+		assert pPosition != null;
+		getCell(pPosition).toggleMark();
+	}
+	
+	/**
+	 * Return the number of mined cells in the 8 cells that surround
+	 * pPosition.
+	 * 
+	 * @param pPosition The position to query.
+	 * @return The number of mined cells around pPosition.
+	 * @pre pPosition != null.
+	 */
+	public int getNumberOfMinedNeighbours(Position pPosition)
+	{
+		assert pPosition != null;
+		return internalGetNumberOfMinedNeighbours(pPosition);
+	}
+		
 	private void initialize()
 	{
 		for( int row = 0; row < aCells.length; row++)
@@ -90,31 +195,6 @@ public class Minefield
 				aCells[row][column] = new Cell();
 				aAllPositions.add(new Position(row, column));
 			}
-		}
-	}
-	
-	public CellStatus getStatus(Position pPosition)
-	{
-		Cell cell = getCell(pPosition);
-		if( cell.isMarked() )
-		{
-			return CellStatus.MARKED;
-		}
-		else if( cell.isHidden() )
-		{
-			return CellStatus.HIDDEN;
-		}
-		else if( cell.isMined() )
-		{
-			return CellStatus.MINE;
-		}
-		else if( internalGetNumberOfMinedNeighbours(pPosition) == 0)
-		{
-			return CellStatus.CLEAR;
-		}
-		else
-		{
-			return CellStatus.PROXIMITY;
 		}
 	}
 	
@@ -143,20 +223,6 @@ public class Minefield
 		return aCells[0].length;
 	}
 	
-	public void reveal(Position pPosition)
-	{
-		Cell cell = getCell(pPosition);
-		if(cell.isMined())
-		{
-			revealAll();
-		}
-		else
-		{
-			cell.reveal();
-			autoReveal(pPosition);
-		}
-	}
-	
 	private void revealAll()
 	{
 		for( Position position : aAllPositions )
@@ -180,11 +246,6 @@ public class Minefield
 		}
 	}
 	
-	public void toggleMark(Position pPosition)
-	{
-		getCell(pPosition).toggleMark();
-	}
-	
 	private int internalGetNumberOfMinedNeighbours(Position pPosition)
 	{
 		int total = 0;
@@ -196,11 +257,6 @@ public class Minefield
 			}
 		}
 		return total;
-	}
-	
-	public int getNumberOfMinedNeighbours(Position pPosition)
-	{
-		return internalGetNumberOfMinedNeighbours(pPosition);
 	}
 	
 	private List<Position> getNeighbours(Position pPosition)

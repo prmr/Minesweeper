@@ -66,12 +66,12 @@ public class Minesweeper extends Application
     	{
     		aGrid.add(createTile(position), position.getColumn(), position.getRow());
     	}
-    	GameStatus status = aMinefield.getGameStatus();
-    	if( status == GameStatus.WON )
+    	MinefieldStatus status = aMinefield.getStatus();
+    	if( status == MinefieldStatus.CLEARED )
     	{
     		aStatusBar.setText("You won! Press Enter to play again");
     	}
-    	else if( status == GameStatus.LOST )
+    	else if( status == MinefieldStatus.EXPLODED )
     	{
     		aStatusBar.setText("You lost. Press Enter to try again");
     	}
@@ -114,22 +114,17 @@ public class Minesweeper extends Application
 	
 	private Node createTile(Position pPosition)
 	{
-		CellStatus status = aMinefield.getStatus(pPosition);
-		if( status == CellStatus.MARKED )
+		if( aMinefield.isRevealed(pPosition))
 		{
-			return createHiddenTile(pPosition, true);
-		}
-		else if( status == CellStatus.HIDDEN )
-		{
-			return createHiddenTile(pPosition, false);
+			return createRevealedTile(pPosition);
 		}
 		else
 		{
-			return createRevealedTile(pPosition, status);
+			return createHiddenTile(pPosition);
 		}
 	}
 	
-	private Button createHiddenTile(Position pPosition, boolean pMarked)
+	private Button createHiddenTile(Position pPosition)
 	{
 		Button button = new Button();
 		
@@ -137,12 +132,16 @@ public class Minesweeper extends Application
 		button.setMinWidth(0);
 		button.setStyle("-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
 				"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12; -fx-text-fill: red; -fx-font-weight: bold");
-		if( pMarked)
+		if( aMinefield.isMarked(pPosition))
 		{
 			button.setText("!");
 		}
-		button.setOnAction(e-> {aMinefield.reveal(pPosition); refresh();}); 
-		button.setOnMouseClicked( e-> {
+		button.setOnAction(e-> 
+		{
+			aMinefield.reveal(pPosition); refresh();
+		}); 
+		button.setOnMouseClicked( e-> 
+		{
 			if( e.getButton() == MouseButton.SECONDARY )
 			{
 				aMinefield.toggleMark(pPosition); refresh();
@@ -151,24 +150,28 @@ public class Minesweeper extends Application
 		return button;
 	}
 	
-	private Label createRevealedTile(Position pPosition, CellStatus pStatus)
+	private Label createRevealedTile(Position pPosition)
 	{
 		Label tile = new Label();
 		tile.setMinSize(0, 0);
 		tile.setStyle("-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black; -fx-background-color: lightgrey;");
 		tile.setAlignment(Pos.CENTER);
 		tile.setFont(new Font("Arial", 14));
-		if( pStatus == CellStatus.MINE )
+		if( aMinefield.isMined(pPosition) )
 		{
 			tile.setText("X");
 		}
-		else if( pStatus == CellStatus.CLEAR )
-		{
-			tile.setText(" ");
-		}
 		else
 		{
-			tile.setText(Integer.toString(aMinefield.getNumberOfMinedNeighbours(pPosition)));
+			int numberOfMinedneighbours = aMinefield.getNumberOfMinedNeighbours(pPosition);
+			if( numberOfMinedneighbours == 0 )
+			{
+				tile.setText(" ");
+			}
+			else
+			{
+				tile.setText(Integer.toString(aMinefield.getNumberOfMinedNeighbours(pPosition)));
+			}
 		}
 		return tile;
 	}
