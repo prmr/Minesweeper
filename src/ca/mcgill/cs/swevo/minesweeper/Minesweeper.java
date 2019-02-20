@@ -168,16 +168,17 @@ public class Minesweeper extends Application
 		{
 			button.setText("!");
 		}
-		button.setOnAction(e-> 
-		{
-			aMinefield.reveal(pPosition); refresh();
-		}); 
 		button.setOnMouseClicked( e-> 
 		{
 			if( e.getButton() == MouseButton.SECONDARY )
-			{
-				aMinefield.toggleMark(pPosition); refresh();
+			{ 
+				aMinefield.toggleMark(pPosition); 
 			}
+			else
+			{
+				aMinefield.reveal(pPosition);
+			}
+			refresh();
 		});
 		return button;
 	}
