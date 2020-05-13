@@ -27,8 +27,6 @@ import java.util.List;
 /**
  * A rectangular array of cells that can be mined
  * and interacted with.
- * 
- * @author Martin P. Robillard
  */
 public class Minefield
 {

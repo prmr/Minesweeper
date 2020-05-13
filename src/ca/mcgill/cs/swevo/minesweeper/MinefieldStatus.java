@@ -21,9 +21,7 @@
 package ca.mcgill.cs.swevo.minesweeper;
 
 /**
- * Represents the current abstract state of a minefield.
- * 
- * @author Martin P. Robillard
+ * Represents the current abstract state of a mine field.
  */
 public enum MinefieldStatus
 {

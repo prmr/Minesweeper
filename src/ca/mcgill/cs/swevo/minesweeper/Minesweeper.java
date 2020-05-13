@@ -61,6 +61,7 @@ public class Minesweeper extends Application
 	
 	/**
 	 * Launches the application.
+	 * 
 	 * @param pArgs This program takes no argument.
 	 */
 	public static void main(String[] pArgs) 

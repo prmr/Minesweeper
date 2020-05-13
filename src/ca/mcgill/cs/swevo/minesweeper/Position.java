@@ -21,11 +21,9 @@
 package ca.mcgill.cs.swevo.minesweeper;
 
 /**
- * Represents a position in the minefield. A position
+ * Represents a position in the mine field. A position
  * consists of a row and column index pairs, both
  * zero-indexed. Instances of this class are immutable.
- * 
- * @author Martin P. Robillard
  */
 public class Position
 {

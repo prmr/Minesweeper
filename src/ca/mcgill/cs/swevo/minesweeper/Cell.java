@@ -21,19 +21,14 @@
 package ca.mcgill.cs.swevo.minesweeper;
 
 /**
- * Represents a cell in the minefield. A cell has two orthogonal properties
+ * Represents a cell in the mine field. A cell has two orthogonal properties
  * that can be modified: a cell can be mined or not, and a cell can be hidden,
  * marked (as hiding a mine), or revealed.
- * 
- * @author Martin P. Robillard
- *
  */
 public class Cell
 {
 	/**
 	 * Represents how the user interacted with a cell.
-	 * 
-	 * @author Martin P. Robillard
 	 */
 	private enum CellInteractionStatus
 	{
@@ -91,6 +86,7 @@ public class Cell
 	/**
 	 * If this cell is not marked, mark it. If the cell is marked,
 	 * unmark it.
+	 * 
 	 * @pre isHidden() == true;
 	 */
 	public void toggleMark()
