@@ -279,12 +279,14 @@ public class Minefield
 	
 	private List<Position> getNeighbours(Position pPosition)
 	{
-		List<Position> neighbours = new ArrayList<>();
+		final List<Position> neighbours = new ArrayList<>();
 		for( int row = Math.max(0, pPosition.getRow() -1); row <= Math.min(getNumberOfRows()-1, pPosition.getRow()+1); row++)
 		{
-			for( int column = Math.max(0, pPosition.getColumn()-1); column <= Math.min(getNumberOfColumns()-1, pPosition.getColumn()+1); column++)
+			for( int column = Math.max(0, pPosition.getColumn()-1); 
+					column <= Math.min(getNumberOfColumns()-1, 
+							pPosition.getColumn()+1); column++)
 			{
-				Position position = new Position(row, column);
+				final Position position = new Position(row, column);
 				if( !position.equals(pPosition))
 				{
 					neighbours.add(position);

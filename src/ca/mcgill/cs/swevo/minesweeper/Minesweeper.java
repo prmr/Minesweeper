@@ -38,8 +38,9 @@ import javafx.stage.Stage;
 /**
  * Starting point for the application.
  */
-public class Minesweeper extends Application
+public final class Minesweeper extends Application
 {
+	private static final String ARIAL = "Arial";
 	private static final int PADDING = 1;
 	private static final int NUMBER_OF_ROWS = 8;
 	private static final int NUMBER_OF_COLUMNS = 20;
@@ -58,6 +59,8 @@ public class Minesweeper extends Application
 	private Minefield aMinefield;
 	private GridPane aGrid;
 	private Label aStatusBar;
+	
+	public Minesweeper() {}
 	
 	/**
 	 * Launches the application.
@@ -117,10 +120,11 @@ public class Minesweeper extends Application
 	
 	private Scene createScene() 
 	{
-		BorderPane root = new BorderPane();
 		aStatusBar = new Label();
-		aStatusBar.setFont(new Font("Arial", FONT_SIZE_STATUS_BAR));
+		aStatusBar.setFont(new Font(ARIAL, FONT_SIZE_STATUS_BAR));
 		BorderPane.setMargin(aStatusBar, INSETS_STATUS_BAR);
+
+		final BorderPane root = new BorderPane();
 		root.setTop(aStatusBar);
 		aGrid = new GridPane();
 		root.setCenter(aGrid);
@@ -190,7 +194,7 @@ public class Minesweeper extends Application
 		tile.setMinSize(0, 0);
 		tile.setStyle(TILE_STYLE_REVEALED);
 		tile.setAlignment(Pos.CENTER);
-		tile.setFont(new Font("Arial", FONT_SIZE_STATUS_TILE));
+		tile.setFont(new Font(Minesweeper.ARIAL, FONT_SIZE_STATUS_TILE));
 		if( aMinefield.isMined(pPosition) )
 		{
 			tile.setText("X");

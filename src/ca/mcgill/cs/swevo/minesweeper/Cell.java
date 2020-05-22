@@ -48,8 +48,10 @@ public class Cell
 		REVEALED
 	}
 
-	private boolean aIsMined = false;
+	private boolean aIsMined; // Default false
 	private CellInteractionStatus aInteractionStatus = CellInteractionStatus.HIDDEN;
+	
+	public Cell() {}
 	
 	/**
 	 * @return True if the cell is hidden, whether it is marked or not.

@@ -10,9 +10,6 @@
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
-  <module name="BeforeExecutionExclusionFileFilter">
-  <property name="fileNamePattern" value="module\-info\.java$"/>
-  </module>
   <module name="TreeWalker">
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
@@ -169,7 +166,10 @@
     <module name="AvoidNoArgumentSuperConstructorCall"/>
     <module name="EqualsAvoidNull"/>
     <module name="ExplicitInitialization"/>
-    <module name="FinalLocalVariable"/>
+    <module name="FinalLocalVariable">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="IllegalThrows"/>
     <module name="IllegalToken"/>
     <module name="IllegalTokenText"/>
@@ -188,6 +188,9 @@
     <module name="OneStatementPerLine"/>
     <module name="VariableDeclarationUsageDistance"/>
     <module name="OverloadMethodsDeclarationOrder"/>
+  </module>
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
   </module>
   <module name="LineLength">
     <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
