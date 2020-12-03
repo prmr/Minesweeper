@@ -88,4 +88,10 @@ public class Position
 		Position other = (Position) pObject;
 		return aColumnIndex == other.aColumnIndex && aRowIndex == other.aRowIndex;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("(r=%d, c=%d)", aRowIndex, aColumnIndex);
+	}
 }
