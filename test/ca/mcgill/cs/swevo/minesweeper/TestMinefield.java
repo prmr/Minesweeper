@@ -22,6 +22,7 @@ package ca.mcgill.cs.swevo.minesweeper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
@@ -81,5 +82,9 @@ public class TestMinefield
 	public void testNeighbours_TopLeft()
 	{
 		List<Position> result = getNeighbours(new Position(0,0));
+		assertEquals(3, result.size());
+		assertTrue(result.contains(new Position(0, 1)));
+		assertTrue(result.contains(new Position(1, 1)));
+		assertTrue(result.contains(new Position(1, 0)));
 	}
 }
