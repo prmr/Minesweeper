@@ -22,6 +22,10 @@ package ca.mcgill.cs.swevo.minesweeper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +33,27 @@ import org.junit.jupiter.api.Test;
 public class TestMinefield
 {
 	private Minefield aMinefield;
+	private final Method aGetNeighboursMethod;
+	
+	public TestMinefield() throws ReflectiveOperationException
+	{
+		aGetNeighboursMethod = Minefield.class.getDeclaredMethod("getNeighbours", Position.class);
+		aGetNeighboursMethod.setAccessible(true);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Position> getNeighbours(Position pPosition)
+	{
+		try
+		{
+			return (List<Position>) aGetNeighboursMethod.invoke(aMinefield, pPosition);
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
+	}
 	
 	@BeforeEach
 	public void setUp()
@@ -50,5 +75,11 @@ public class TestMinefield
 			}
 		}
 		assertEquals(5, mines);
+	}
+	
+	@Test
+	public void testNeighbours_TopLeft()
+	{
+		List<Position> result = getNeighbours(new Position(0,0));
 	}
 }
