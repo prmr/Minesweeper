@@ -50,7 +50,7 @@ public final class Minesweeper extends Application
 	private static final Insets INSETS_STATUS_BAR = new Insets(5, 0, 0, 8);
 	private static final String TILE_STYLE_HIDDEN = 
 			"-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;" +
-			"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 12; " + 
+			"-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 10; " + 
 			"-fx-text-fill: red; -fx-font-weight: bold";
 	private static final String TILE_STYLE_REVEALED = 
 			"-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black;" +
@@ -78,7 +78,6 @@ public final class Minesweeper extends Application
     	prepareStage(pStage);
         pStage.setScene(createScene());
         newGame();
-        refresh();
         pStage.show();
         aGrid.requestFocus();
     }
