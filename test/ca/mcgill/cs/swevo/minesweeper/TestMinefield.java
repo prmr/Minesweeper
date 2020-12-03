@@ -84,5 +84,6 @@ public class TestMinefield
 		List<Position> result = getNeighbours(new Position(0,0));
 		assertEquals(3, result.size());
 		assertTrue(result.contains(new Position(0, 1)));
+		assertTrue(result.contains(new Position(1, 1)));
 	}
 }
