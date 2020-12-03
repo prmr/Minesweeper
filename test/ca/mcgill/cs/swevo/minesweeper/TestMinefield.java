@@ -81,5 +81,6 @@ public class TestMinefield
 	public void testNeighbours_TopLeft()
 	{
 		List<Position> result = getNeighbours(new Position(0,0));
+		assertEquals(3, result.size());
 	}
 }
