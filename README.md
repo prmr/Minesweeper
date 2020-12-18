@@ -1,6 +1,6 @@
 # Minesweeper
 
-Sample application for my COMP 303 Software Design course at McGill. 
+Sample Java application with JavaFX.
 
 The goal of this project is to help illustrate
 various design decisions related to abstraction, encapsulation, and information hiding, in the context of a complete working application. The rest of the code has been left to a minimum. Common best practices not implemented here would include externalizing strings and using icons in the UI, which were judged to be superfluous at this point.
