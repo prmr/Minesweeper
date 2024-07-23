@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Minesweeper
  *
- * Copyright (C) 2018 by Martin P. Robillard
+ * Copyright (C) 2018-2024 by Martin P. Robillard
  *     
  * See: https://github.com/prmr/Minesweeper
  *
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
  *******************************************************************************/
 package ca.mcgill.cs.swevo.minesweeper;
 
@@ -51,6 +51,9 @@ public class Cell
 	private boolean aIsMined; // Default false
 	private CellInteractionStatus aInteractionStatus = CellInteractionStatus.HIDDEN;
 	
+	/**
+	 * Create an empty cell.
+	 */
 	public Cell() {}
 	
 	/**
