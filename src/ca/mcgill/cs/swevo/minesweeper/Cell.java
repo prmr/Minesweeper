@@ -1,22 +1,22 @@
 /*******************************************************************************
  * Minesweeper
  *
- * Copyright (C) 2018-2024 by Martin P. Robillard
- *     
+ * Copyright (C) 2018-2025 by Martin P. Robillard
+ * 
  * See: https://github.com/prmr/Minesweeper
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses/.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses/.
  *******************************************************************************/
 package ca.mcgill.cs.swevo.minesweeper;
 
@@ -25,23 +25,22 @@ package ca.mcgill.cs.swevo.minesweeper;
  * that can be modified: a cell can be mined or not, and a cell can be hidden,
  * marked (as hiding a mine), or revealed.
  */
-public class Cell
-{
+public class Cell {
 	/**
 	 * Represents how the user interacted with a cell.
 	 */
-	private enum CellInteractionStatus
-	{
+	private enum CellInteractionStatus {
 		/**
 		 * The cell is hidden and not marked.
 		 */
-		HIDDEN, 
-		
+		HIDDEN,
+
 		/**
-		 * The cell is hidden but has been marked by the player as hiding a mine.
+		 * The cell is hidden but has been marked by the player as hiding a
+		 * mine.
 		 */
 		MARKED,
-		
+
 		/**
 		 * The cell has been revealed.
 		 */
@@ -50,62 +49,55 @@ public class Cell
 
 	private boolean aIsMined; // Default false
 	private CellInteractionStatus aInteractionStatus = CellInteractionStatus.HIDDEN;
-	
+
 	/**
 	 * Create an empty cell.
 	 */
-	public Cell() {}
-	
+	public Cell() {
+	}
+
 	/**
 	 * Getter to look up cell's hidden / not hidden status.
 	 * @return True if the cell is hidden, whether it is marked or not.
 	 */
-	public boolean isHidden() 
-	{
+	public boolean isHidden() {
 		return aInteractionStatus != CellInteractionStatus.REVEALED;
 	}
-	
+
 	/**
 	 * Getter to look up cell's marked / not marked status.
 	 * @return True if the cell is marked.
 	 */
-	public boolean isMarked()
-	{
+	public boolean isMarked() {
 		return aInteractionStatus == CellInteractionStatus.MARKED;
 	}
-	
+
 	/**
 	 * Getter to look up if cell is mined.
 	 * @return True if the cell is mined, false otherwise.
 	 */
-	public boolean isMined() 
-	{
+	public boolean isMined() {
 		return aIsMined;
 	}
-	
+
 	/**
 	 * Change the status of this cell to represent a revealed cell.
 	 */
-	public void reveal()
-	{
+	public void reveal() {
 		aInteractionStatus = CellInteractionStatus.REVEALED;
 	}
-	
+
 	/**
-	 * If this cell is not marked, mark it. If the cell is marked,
-	 * unmark it.
+	 * If this cell is not marked, mark it. If the cell is marked, unmark it.
 	 * 
 	 * @pre isHidden() == true;
 	 */
-	public void toggleMark()
-	{
+	public void toggleMark() {
 		assert isHidden();
-		if(aInteractionStatus == CellInteractionStatus.MARKED)
-		{
+		if (aInteractionStatus == CellInteractionStatus.MARKED) {
 			aInteractionStatus = CellInteractionStatus.HIDDEN;
 		}
-		else
-		{
+		else {
 			aInteractionStatus = CellInteractionStatus.MARKED;
 		}
 	}
@@ -113,8 +105,7 @@ public class Cell
 	/**
 	 * Marks the cell as mined.
 	 */
-	public void mine()
-	{
+	public void mine() {
 		aIsMined = true;
 	}
 }

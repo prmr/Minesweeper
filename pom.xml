@@ -124,8 +124,33 @@
             </plugin>
 
             <!-- The shade plugin is needed to create a "self-contained / fat" jar, that is,
+            <!-- Enforces respecting checkstyle as part of validate phase (pre compile)-->
+            <!-- The validate phase will fail, cancelling the build, unless checkstyle is -->
+            <!-- respected in all classes -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>10.24.0</version>
+					</dependency>
+				</dependencies>
+                <configuration>
+                    <configLocation>config/Style.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <violationSeverity>warning</violationSeverity>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+            </plugin>
+
+			<!-- The shade plugin is needed to create a "self-contained / fat" jar, that is,
             a jar with all dependencies included.-->
-            <!-- Note, by default we want a thin jar, therefore this plugin has a "skip"
+			<!-- Note, by default we want a thin jar, therefore this plugin has a "skip"
             configuration set to "true" by default (property defined in project properties) -->
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -137,7 +162,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <!-- Skip this plugin if current profile says so-->
+							<!-- Skip this plugin if current profile says so-->
                             <skip>${skip.shade.plugin}</skip>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
