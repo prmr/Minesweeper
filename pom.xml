@@ -155,6 +155,26 @@
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>
+                <configuration>
+                    <!-- stop spamming the base project with a fused pom -->
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <!-- stop fusing meta files colliding from inner jars when creating far jar -->
+                    <!-- (not needed for project and silences warnings -->
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/**/*.json</exclude>
+                                <exclude>META-INF/*.MF</exclude>
+                                <exclude>META-INF/substrate/config/resourcebundles</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
