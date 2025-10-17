@@ -57,6 +57,7 @@ public class Cell {
 	}
 
 	/**
+	 * Getter to look up cell's hidden / not hidden status.
 	 * @return True if the cell is hidden, whether it is marked or not.
 	 */
 	public boolean isHidden() {
@@ -64,6 +65,7 @@ public class Cell {
 	}
 
 	/**
+	 * Getter to look up cell's marked / not marked status.
 	 * @return True if the cell is marked.
 	 */
 	public boolean isMarked() {
@@ -71,6 +73,7 @@ public class Cell {
 	}
 
 	/**
+	 * Getter to look up if cell is mined.
 	 * @return True if the cell is mined, false otherwise.
 	 */
 	public boolean isMined() {

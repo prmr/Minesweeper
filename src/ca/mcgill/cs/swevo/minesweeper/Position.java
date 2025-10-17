@@ -33,7 +33,7 @@ public class Position {
 	 * 
 	 * @param pRow The zero-indexed row of this position.
 	 * @param pColumn The zero-index column of this position.
-	 * @pre pRow >= 0 && pColumn >= 0;
+	 * @pre pRow >= 0 &amp;&amp; pColumn >= 0;
 	 */
 	public Position(int pRow, int pColumn) {
 		assert pRow >= 0 && pColumn >= 0;
@@ -42,6 +42,8 @@ public class Position {
 	}
 
 	/**
+	 * Getter to look up row of this position object.
+	 *
 	 * @return The row index of this position.
 	 */
 	public int getRow() {
@@ -49,6 +51,8 @@ public class Position {
 	}
 
 	/**
+	 * Getter to look up column of this position object.
+	 *
 	 * @return The column index of this position.
 	 */
 	public int getColumn() {

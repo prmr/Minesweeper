@@ -92,6 +92,38 @@
                 </configuration>
             </plugin>
 
+            <!-- Plugin to ensure all functions are commented and generates html javadoc (in target dir) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <configuration>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <!-- configure to produce HTML javadocs in target/docs -->
+                    <outputDirectory>${project.build.directory}/docs</outputDirectory>
+                    <failOnWarnings>false</failOnWarnings>
+                    <quiet>true</quiet>
+                    <!-- Custom JavaDoc rule for @pre tag. -->
+                    <tags>
+                        <tag>
+                            <name>pre</name>
+                            <placement>a</placement>
+                            <head>Precondition:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+                <!-- Execute this plugin as part of package phase -->
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- The shade plugin is needed to create a "self-contained / fat" jar, that is,
             <!-- Enforces respecting checkstyle as part of validate phase (pre compile)-->
             <!-- The validate phase will fail, cancelling the build, unless checkstyle is -->
             <!-- respected in all classes -->

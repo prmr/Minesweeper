@@ -38,8 +38,7 @@ public class Minefield {
 	 * @param pRows The number of rows in the field.
 	 * @param pColumns The number of columns in the field.
 	 * @param pMines the number of mines in the field.
-	 * @pre pRows > 0 && pColumns > 0 && pMines >= 0 && pMines <= pColumns *
-	 *     pRows;
+	 * @pre pRows &gt; 0 &amp;&amp; pColumns > 0 &amp;&amp; pMines &gt;= 0 &amp;&amp; pMines &lt;= pColumns * pRows;
 	 */
 	public Minefield(int pRows, int pColumns, int pMines) {
 		assert pRows > 0 && pColumns > 0 && pMines >= 0 && pMines <= pColumns * pRows;
@@ -49,6 +48,8 @@ public class Minefield {
 	}
 
 	/**
+	 * Getter for an all-positions iterator.
+	 *
 	 * @return An iterator over all positions in the mine field.
 	 */
 	public Iterable<Position> getAllPositions() {
@@ -56,6 +57,8 @@ public class Minefield {
 	}
 
 	/**
+	 * Getter to look up MinefieldStatus of this field.
+	 *
 	 * @return A description of the current status of the mine field.
 	 */
 	public MinefieldStatus getStatus() {
@@ -109,6 +112,8 @@ public class Minefield {
 	}
 
 	/**
+	 * Getter to look up if cell at a given position has already been revealed.
+	 *
 	 * @param pPosition The position to query.
 	 * @return True if the cell at pPosition is revealed.
 	 * @pre pPosition != null
@@ -119,6 +124,8 @@ public class Minefield {
 	}
 
 	/**
+	 * Getter to look up if cell at a given position has already been marked.
+	 *
 	 * @param pPosition The position to query.
 	 * @return True if the cell at pPosition is marked.
 	 * @pre pPosition != null
@@ -129,6 +136,8 @@ public class Minefield {
 	}
 
 	/**
+	 * Getter to look up if cell at a provided position is mined.
+	 *
 	 * @param pPosition The position to query.
 	 * @return True if the cell at pPosition is mined.
 	 * @pre pPosition != null
