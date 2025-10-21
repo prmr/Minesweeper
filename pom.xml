@@ -68,6 +68,12 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                		<options>
+                			<!-- Eliminates a warning java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics -->
+               			<option>--enable-native-access=javafx.graphics</option>
+                		</options>
+                </configuration>
                 <!--  To run (without debugger), use: mvn clean javafx:run@run-->
                 <executions>
                     <execution>
