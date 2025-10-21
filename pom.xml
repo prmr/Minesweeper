@@ -124,10 +124,8 @@
                 </executions>
             </plugin>
 
-            <!-- The shade plugin is needed to create a "self-contained / fat" jar, that is, -->
-            <!-- Enforces respecting checkstyle as part of validate phase (pre compile)-->
-            <!-- The validate phase will fail, cancelling the build, unless checkstyle is -->
-            <!-- respected in all classes -->
+            <!-- Enforces respecting checkstyle. -->
+            <!-- Not included in any execution. Must be run standalone with: mvn compile checkstyle:check -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>

@@ -29,8 +29,9 @@ _**MacOs Users**: When you run the application, from the run configuration, make
 The following commands can be run from the command line or by right-clicking on the `pom.xml` file and selecting `Run As...`.
 
 * Compiling: `mvn clean compile`
+* Validating style: `mvn compile checkstyle:check`
 * Testing: `mvn clean test`
-* Packaging: `mvn clean package` or `mvn clean package -Pfat` to create a fat jar
+* Packaging: `mvn clean package` or `mvn clean package -Pfat` to create a fat jar. This command will also create the javadocs in `target/docs`
 * Running: `mvn clean javafx:run@run`
 
 By default,packaging creates a thin jar as `target/Minesweeper-VERSION.jar`. To run the packaged application from the thin jar, you must have the JavaFX library downloaded somewhere, assumed to be `PATH_TO_JAVAFX_LIB`. To run the jar, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
