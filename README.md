@@ -8,22 +8,6 @@ This application was also designed to be simple enough to be realizable without 
 
 ![Screenshot of the Minesweeper application](Minesweeper.png)
 
-## Building and Running with Eclipse
-
-This repository is configured to build automatically in Eclipse with Java 21 and JavaFX 21. However, when first imported, the project will show a compilation error because the JavaFX dependency is missing.
-
-To add JavaFX:
-
-1. Download [JavaFX 21](https://jdk.java.net/javafx21/);
-2. Create a new `User Library` under `Eclipse -> Window -> Preferences -> Java -> Build Path -> User Libraries -> New`. Name it `JavaFX21` and include the jars under the `lib` folder from the location where you extracted the JavaFX download.
-
-The project should then build properly. To run the application within the Eclipse workspace:
-
-* Right-click on the project and select `Run As -> Java Application`. Select `Minesweeper` from the list. 
-* To run the tests, select `Run As - > JUnit Test`.
-
-_**MacOs Users**: When you run the application, from the run configuration, make sure the checkbox "Use the -XstartOnFirstThread argument when launching with SWT" is _not_ checked._ 
-
 ## Building and Running with Maven
 
 The following commands can be run from the command line or by right-clicking on the `pom.xml` file and selecting `Run As...`.
@@ -45,3 +29,17 @@ To run the packaged application from the far jar, simply run the jar as:
 ```
 java -jar Minesweeper-VERSION.jar
 ```
+
+## Building and Running with Eclipse
+
+If you used Maven to fetch the dependencies, you can simply run the application and test directly from Eclipse.
+
+* Right-click on the project and select `Run As -> Java Application`. Select `Minesweeper` from the list. 
+* To run the tests, select `Run As - > JUnit Test`.
+
+_**MacOs Users**: When you run the application, from the run configuration, make sure the checkbox "Use the -XstartOnFirstThread argument when launching with SWT" is _not_ checked._ 
+
+If you did not run Maven, you must add the JavaFX and JUnit5 dependencies manually. JUnit is available through the project properties's Java Build Path dialog. To add JavaFX:
+
+1. Download [JavaFX 21](https://jdk.java.net/javafx21/);
+2. Create a new `User Library` under `Eclipse -> Window -> Preferences -> Java -> Build Path -> User Libraries -> New`. Name it `JavaFX21` and include the jars under the `lib` folder from the location where you extracted the JavaFX download.
