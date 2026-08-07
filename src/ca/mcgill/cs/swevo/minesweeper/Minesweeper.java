@@ -28,6 +28,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
@@ -47,11 +49,14 @@ public final class Minesweeper extends Application {
 	private static final int FONT_SIZE_STATUS_BAR = 16;
 	private static final int FONT_SIZE_STATUS_TILE = 14;
 	private static final Insets INSETS_STATUS_BAR = new Insets(5, 0, 0, 8);
-	private static final String TILE_STYLE_HIDDEN = "-fx-background-radius: 0; -fx-pref-width: 20px; -fx-pref-height: 20px;"
+	private static final String TILE_STYLE_HIDDEN = "-fx-background-radius: 0; -fx-pref-width: 24px; -fx-pref-height: 24px;"
 			+ "-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-font-size: 10; "
 			+ "-fx-text-fill: red; -fx-font-weight: bold";
-	private static final String TILE_STYLE_REVEALED = "-fx-pref-width: 20px; -fx-pref-height: 20px; -fx-border-width: 0; -fx-border-color: black;"
+	private static final String TILE_STYLE_REVEALED = "-fx-pref-width: 24px; -fx-pref-height: 24px; -fx-border-width: 0; -fx-border-color: black;"
 			+ "-fx-background-color: lightgrey;";
+	
+	private static final Image IMAGE_FLAG = new Image(Minesweeper.class.getClassLoader().getResourceAsStream("flag-16x16.png"));
+	private static final Image IMAGE_MINE = new Image(Minesweeper.class.getClassLoader().getResourceAsStream("mine-16x16.png"));
 
 	private Minefield aMinefield;
 	private GridPane aGrid;
@@ -153,7 +158,7 @@ public final class Minesweeper extends Application {
 		button.setMinWidth(0);
 		button.setStyle(TILE_STYLE_HIDDEN);
 		if (aMinefield.isMarked(pPosition)) {
-			button.setText("!");
+			button.setGraphic(new ImageView(IMAGE_FLAG));
 		}
 		button.setOnMouseClicked(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
@@ -174,7 +179,7 @@ public final class Minesweeper extends Application {
 		tile.setAlignment(Pos.CENTER);
 		tile.setFont(new Font(Minesweeper.ARIAL, FONT_SIZE_STATUS_TILE));
 		if (aMinefield.isMined(pPosition)) {
-			tile.setText("X");
+			tile.setGraphic(new ImageView(IMAGE_MINE));
 		}
 		else {
 			int numberOfMinedneighbours = aMinefield.getNumberOfMinedNeighbours(pPosition);
