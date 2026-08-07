@@ -5,7 +5,7 @@
     <groupId>ca.mcgill.cs.swevo</groupId>
     <artifactId>minesweeper</artifactId>
     <packaging>jar</packaging>
-    <version>1.2</version>
+    <version>1.2-SNAPSHOT</version>
     <name>Minesweeper</name>
     <url>https://github.com/prmr/Minesweeper</url>
 
@@ -84,7 +84,7 @@
                     <execution>
                         <id>run</id>
                         <configuration>
-                            <mainClass>minesweeper/ca.mcgill.cs.swevo.minesweeper.Minesweeper</mainClass>
+                            <mainClass>minesweeper/ca.mcgill.msweeper.Minesweeper</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -98,7 +98,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ca.mcgill.cs.swevo.minesweeper.Minesweeper</mainClass>
+                            <mainClass>ca.mcgill.msweeper.Minesweeper</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -198,7 +198,7 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>
-                                        ca.mcgill.cs.swevo.minesweeper.ShadeMinesweeper
+                                        ca.mcgill.msweeper.ShadeMinesweeper
                                     </mainClass>
                                 </transformer>
                             </transformers>

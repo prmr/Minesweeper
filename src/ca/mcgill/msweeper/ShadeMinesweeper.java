@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see http://www.gnu.org/licenses/.
  *******************************************************************************/
-package ca.mcgill.cs.swevo.minesweeper;
+package ca.mcgill.msweeper;
 
 /**
  * Required for packaging to self-contained jar. The shade plugin needs a
