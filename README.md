@@ -1,5 +1,7 @@
 # Minesweeper
 
+[![Build](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml/badge.svg)](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml)
+
 Sample Java application with JavaFX. Demonstration application used in the book [Introduction to Software Design with Java](https://link.springer.com/book/10.1007/978-3-030-24094-3).
 
 The goal of this project is to help illustrate various design decisions related to abstraction, encapsulation, and information hiding, in the context of a complete working application. The rest of the code has been left to a minimum. Common best practices not implemented here would include externalizing strings and using icons in the UI.
