@@ -52,6 +52,11 @@
         <!-- Override source location (default for maven is src/main/java)-->
         <sourceDirectory>${src.dir}</sourceDirectory>
         <testSourceDirectory>${testsrc.dir}</testSourceDirectory>
+        <resources>
+			<resource>
+				<directory>resources</directory>
+			</resource>
+		</resources>
 
         <plugins>
             <plugin>
