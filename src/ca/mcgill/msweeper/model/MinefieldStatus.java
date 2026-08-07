@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Minesweeper
  *
- * Copyright (C) 2018-2024 by Martin P. Robillard
+ * Copyright (C) 2018-2026 by Martin P. Robillard
  * 
  * See: https://github.com/prmr/Minesweeper
  *
