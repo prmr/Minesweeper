@@ -31,11 +31,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestMinefield {
+public class MinefieldTest {
 	private Minefield aMinefield;
 	private final Method aGetNeighboursMethod;
 
-	public TestMinefield() throws ReflectiveOperationException {
+	public MinefieldTest() throws ReflectiveOperationException {
 		aGetNeighboursMethod = Minefield.class.getDeclaredMethod("getNeighbours", Position.class);
 		aGetNeighboursMethod.setAccessible(true);
 	}

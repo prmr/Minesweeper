@@ -20,55 +20,44 @@
  *******************************************************************************/
 package ca.mcgill.msweeper.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class TestCell {
+public class PositionTest {
 	@Test
-	public void testConstructor() {
-		Cell cell = new Cell();
-		assertTrue(cell.isHidden());
-		assertFalse(cell.isMarked());
-		assertFalse(cell.isMined());
+	public void testConstructorOrigin() {
+		Position position = new Position(0, 0);
+		assertEquals(0, position.getRow());
+		assertEquals(0, position.getColumn());
 	}
 
 	@Test
-	public void testMine() {
-		Cell cell = new Cell();
-		assertFalse(cell.isMined());
-		cell.mine();
-		assertTrue(cell.isMined());
+	public void testConstructorOther() {
+		Position position = new Position(2, 7);
+		assertEquals(2, position.getRow());
+		assertEquals(7, position.getColumn());
 	}
 
 	@Test
-	public void testRevealNotMarked() {
-		Cell cell = new Cell();
-		cell.reveal();
-		assertFalse(cell.isHidden());
-		assertFalse(cell.isMarked());
-		assertFalse(cell.isMined());
+	public void testHashCode() {
+		assertEquals(961, new Position(0, 0).hashCode());
+		assertEquals(1180, new Position(2, 7).hashCode());
+		assertEquals(1030, new Position(7, 2).hashCode());
+		assertEquals(1825, new Position(27, 27).hashCode());
 	}
 
 	@Test
-	public void testRevealMarked() {
-		Cell cell = new Cell();
-		cell.toggleMark();
-		cell.reveal();
-		assertFalse(cell.isHidden());
-		assertFalse(cell.isMarked());
-		assertFalse(cell.isMined());
-	}
-
-	@Test
-	public void testToggleMark() {
-		Cell cell = new Cell();
-		cell.toggleMark();
-		assertTrue(cell.isHidden());
-		assertTrue(cell.isMarked());
-		cell.toggleMark();
-		assertTrue(cell.isHidden());
-		assertFalse(cell.isMarked());
+	public void testEquals() {
+		Position p1 = new Position(2, 7);
+		Position p2 = new Position(2, 7);
+		Position p3 = new Position(7, 2);
+		assertFalse(p1.equals(null));
+		assertTrue(p1.equals(p1));
+		assertTrue(p1.equals(p2));
+		assertTrue(p2.equals(p1));
+		assertFalse(p1.equals(p3));
 	}
 }
