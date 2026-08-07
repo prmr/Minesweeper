@@ -4,6 +4,9 @@ on: push
 
 jobs:
   build:
+	
+	permissions:
+	      contents: read
 
     runs-on: ubuntu-latest # windows-latest, macos-latest
 
