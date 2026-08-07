@@ -26,49 +26,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class CellTest {
+	
+	private final Cell aCell = new Cell();
+	
 	@Test
-	public void testConstructor() {
-		Cell cell = new Cell();
-		assertTrue(cell.isHidden());
-		assertFalse(cell.isMarked());
-		assertFalse(cell.isMined());
+	void testConstructor() {
+		assertTrue(aCell.isHidden());
+		assertFalse(aCell.isMarked());
+		assertFalse(aCell.isMined());
 	}
 
 	@Test
-	public void testMine() {
-		Cell cell = new Cell();
-		assertFalse(cell.isMined());
-		cell.mine();
-		assertTrue(cell.isMined());
+	void testMine() {
+		assertFalse(aCell.isMined());
+		aCell.mine();
+		assertTrue(aCell.isMined());
 	}
 
 	@Test
-	public void testRevealNotMarked() {
-		Cell cell = new Cell();
-		cell.reveal();
-		assertFalse(cell.isHidden());
-		assertFalse(cell.isMarked());
-		assertFalse(cell.isMined());
+	void testRevealNotMarked() {
+		aCell.reveal();
+		assertFalse(aCell.isHidden());
+		assertFalse(aCell.isMarked());
+		assertFalse(aCell.isMined());
 	}
 
 	@Test
-	public void testRevealMarked() {
-		Cell cell = new Cell();
-		cell.toggleMark();
-		cell.reveal();
-		assertFalse(cell.isHidden());
-		assertFalse(cell.isMarked());
-		assertFalse(cell.isMined());
+	void testRevealMarked() {
+		aCell.toggleMark();
+		aCell.reveal();
+		assertFalse(aCell.isHidden());
+		assertFalse(aCell.isMarked());
+		assertFalse(aCell.isMined());
 	}
 
 	@Test
-	public void testToggleMark() {
-		Cell cell = new Cell();
-		cell.toggleMark();
-		assertTrue(cell.isHidden());
-		assertTrue(cell.isMarked());
-		cell.toggleMark();
-		assertTrue(cell.isHidden());
-		assertFalse(cell.isMarked());
+	void testToggleMark() {
+		aCell.toggleMark();
+		assertTrue(aCell.isHidden());
+		assertTrue(aCell.isMarked());
+		aCell.toggleMark();
+		assertTrue(aCell.isHidden());
+		assertFalse(aCell.isMarked());
 	}
 }

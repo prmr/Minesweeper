@@ -28,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MinefieldTest {
-	private Minefield aMinefield;
+	
+	private Minefield aMinefield = new Minefield(5, 5, 5);
 	private final Method aGetNeighboursMethod;
 
 	public MinefieldTest() throws ReflectiveOperationException {
@@ -51,13 +51,8 @@ public class MinefieldTest {
 		}
 	}
 
-	@BeforeEach
-	public void setUp() {
-		aMinefield = new Minefield(5, 5, 5);
-	}
-
 	@Test
-	public void testInitialization() {
+	void testInitialization() {
 		int mines = 0;
 		for (Position position : aMinefield.getAllPositions()) {
 			assertFalse(aMinefield.isMarked(position));
@@ -70,7 +65,7 @@ public class MinefieldTest {
 	}
 
 	@Test
-	public void testNeighbours_TopLeft() {
+	void testNeighbours_TopLeft() {
 		List<Position> result = getNeighbours(new Position(0, 0));
 		assertEquals(3, result.size());
 		assertTrue(result.contains(new Position(0, 1)));
