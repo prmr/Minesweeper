@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see http://www.gnu.org/licenses/.
  *******************************************************************************/
-package ca.mcgill.msweeper;
+package ca.mcgill.msweeper.model;
 
 /**
  * Represents a cell in the mine field. A cell has two orthogonal properties

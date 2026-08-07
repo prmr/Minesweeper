@@ -20,6 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.msweeper;
 
+import ca.mcgill.msweeper.model.Minefield;
+import ca.mcgill.msweeper.model.MinefieldStatus;
+import ca.mcgill.msweeper.model.Position;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
