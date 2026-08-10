@@ -20,8 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.msweeper.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -30,15 +29,66 @@ public class MinefieldTest {
 	private Minefield aMinefield = new Minefield(5, 5, 5);
 
 	@Test
-	void testInitialization() {
-		int mines = 0;
+	void testGetNumberOfMinesLeft_All() {
+		assertEquals(5, aMinefield.getNumberOfMinesLeft());
+	}
+	
+	@Test
+	void testGetNumberOfMinesLeft_Some() {
+		aMinefield.toggleFlag(new Position(0,0));
+		assertEquals(4, aMinefield.getNumberOfMinesLeft());
+	}
+	
+	@Test
+	void testGetNumberOfMinesLeft_None() {
+		aMinefield.toggleFlag(new Position(0,0));
+		aMinefield.toggleFlag(new Position(0,1));
+		aMinefield.toggleFlag(new Position(0,2));
+		aMinefield.toggleFlag(new Position(0,3));
+		aMinefield.toggleFlag(new Position(0,4));
+		assertEquals(0, aMinefield.getNumberOfMinesLeft());
+	}
+	
+	@Test
+	void testIsRevealed_False() {
+		assertFalse(aMinefield.isRevealed(new Position(0,0)));
+	}
+	
+	@Test
+	void testIsRevealed_True() {
+		aMinefield.reveal(new Position(0,0));
+		assertTrue(aMinefield.isRevealed(new Position(0,0)));
+	}
+	
+	@Test
+	void testIsFlagged_True() {
+		aMinefield.toggleFlag(new Position(0,0));
+		assertTrue(aMinefield.isFlagged(new Position(0,0)));
+	}
+	
+	@Test
+	void testIsFlagged_Flag() {
+		assertFalse(aMinefield.isFlagged(new Position(0,0)));
+	}
+	
+	@Test
+	void testIsMined() {
+		int total = 0;
 		for (Position position : aMinefield.getAllPositions()) {
-			assertFalse(aMinefield.isFlagged(position));
-			assertFalse(aMinefield.isRevealed(position));
 			if (aMinefield.isMined(position)) {
-				mines++;
+				total++;
 			}
 		}
-		assertEquals(5, mines);
+		assertEquals(5, total);
+	}
+	
+	@Test
+	void testToggleFlag() {
+		final Position position = new Position(2,2);
+		assertFalse(aMinefield.isFlagged(position));
+		aMinefield.toggleFlag(position);
+		assertTrue(aMinefield.isFlagged(position));
+		aMinefield.toggleFlag(position);
+		assertFalse(aMinefield.isFlagged(position));
 	}
 }
