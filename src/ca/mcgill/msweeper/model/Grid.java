@@ -35,6 +35,13 @@ public class Grid implements Iterable<Position> {
 		aPositions = Collections.unmodifiableList(positions);
 	}
 
+	/**
+	 * @return An unmodifiable list of all positions.
+	 */
+	public List<Position> allPositions() {
+		return aPositions;
+	}
+	
 	@Override
 	public Iterator<Position> iterator() {
 		return aPositions.iterator();
