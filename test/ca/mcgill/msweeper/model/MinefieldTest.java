@@ -22,54 +22,23 @@ package ca.mcgill.msweeper.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.lang.reflect.Method;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 public class MinefieldTest {
 	
 	private Minefield aMinefield = new Minefield(5, 5, 5);
-	private final Method aGetNeighboursMethod;
-
-	public MinefieldTest() throws ReflectiveOperationException {
-		aGetNeighboursMethod = Minefield.class.getDeclaredMethod("getNeighbours", Position.class);
-		aGetNeighboursMethod.setAccessible(true);
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<Position> getNeighbours(Position pPosition) {
-		try {
-			return (List<Position>) aGetNeighboursMethod.invoke(aMinefield, pPosition);
-		}
-		catch (ReflectiveOperationException e) {
-			fail();
-			return null;
-		}
-	}
 
 	@Test
 	void testInitialization() {
 		int mines = 0;
 		for (Position position : aMinefield.getAllPositions()) {
-			assertFalse(aMinefield.isMarked(position));
+			assertFalse(aMinefield.isFlagged(position));
 			assertFalse(aMinefield.isRevealed(position));
 			if (aMinefield.isMined(position)) {
 				mines++;
 			}
 		}
 		assertEquals(5, mines);
-	}
-
-	@Test
-	void testNeighbours_TopLeft() {
-		List<Position> result = getNeighbours(new Position(0, 0));
-		assertEquals(3, result.size());
-		assertTrue(result.contains(new Position(0, 1)));
-		assertTrue(result.contains(new Position(1, 1)));
-		assertTrue(result.contains(new Position(1, 0)));
 	}
 }

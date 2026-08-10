@@ -160,12 +160,12 @@ public final class Minesweeper extends Application {
 		button.setMinHeight(0);
 		button.setMinWidth(0);
 		button.setStyle(TILE_STYLE_HIDDEN);
-		if (aMinefield.isMarked(pPosition)) {
+		if (aMinefield.isFlagged(pPosition)) {
 			button.setGraphic(new ImageView(IMAGE_FLAG));
 		}
 		button.setOnMouseClicked(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
-				aMinefield.toggleMark(pPosition);
+				aMinefield.toggleFlag(pPosition);
 			}
 			else {
 				aMinefield.reveal(pPosition);
