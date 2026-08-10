@@ -127,21 +127,20 @@ public class Minefield {
 		assert pPosition != null;
 		return intersection(aMinedPositions, aGrid.getNeighbours(pPosition)).size();
 	}
-
+	
 	/**
-	 * Getter to look up MinefieldStatus of this field.
-	 *
-	 * @return A description of the current status of the mine field.
+	 * @return True if the number of flagged tiles is the same as the number of 
+	 * 	   mines.
 	 */
-	public MinefieldStatus getStatus() {
-			
-		if (!intersection(aMinedPositions, aRevealedPositions).isEmpty()) {
-			return MinefieldStatus.EXPLODED;
-		}
-		if (aMinedPositions.size() == aFlaggedPositions.size()) {
-			return MinefieldStatus.CLEARED;
-		}
-		return MinefieldStatus.NOT_CLEARED;
+	public boolean isCleared() {
+		return aMinedPositions.size() == aFlaggedPositions.size();
+	}
+	
+	/**
+	 * @return True if any revealed position is mined.
+	 */
+	public boolean isExploded() {
+		return !intersection(aMinedPositions, aRevealedPositions).isEmpty();
 	}
 	
 	/**

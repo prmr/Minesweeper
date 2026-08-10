@@ -21,7 +21,6 @@
 package ca.mcgill.msweeper;
 
 import ca.mcgill.msweeper.model.Minefield;
-import ca.mcgill.msweeper.model.MinefieldStatus;
 import ca.mcgill.msweeper.model.Position;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -68,8 +67,7 @@ public final class Minesweeper extends Application {
 	/**
 	 * Initializes the application.
 	 */
-	public Minesweeper() {
-	}
+	public Minesweeper() {}
 
 	/**
 	 * Launches the application.
@@ -105,11 +103,10 @@ public final class Minesweeper extends Application {
 		for (Position position : aMinefield.getAllPositions()) {
 			aGrid.add(createTile(position), position.getColumn(), position.getRow());
 		}
-		MinefieldStatus status = aMinefield.getStatus();
-		if (status == MinefieldStatus.CLEARED) {
+		if (aMinefield.isCleared()) {
 			aStatusBar.setText("You won! Press Enter to play again");
 		}
-		else if (status == MinefieldStatus.EXPLODED) {
+		else if (aMinefield.isExploded()) {
 			aStatusBar.setText("You lost. Press Enter to try again");
 		}
 		else {
