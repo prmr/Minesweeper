@@ -176,7 +176,6 @@ public class Minefield {
 			for (Position neighbour : aGrid.getNeighbours(pPosition)) {
 				if (!isRevealed(neighbour) && !isFlagged(neighbour)) {
 					reveal(neighbour);
-					autoReveal(neighbour);
 				}
 			}
 		}

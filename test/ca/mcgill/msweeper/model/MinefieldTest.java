@@ -20,13 +20,34 @@
  *******************************************************************************/
 package ca.mcgill.msweeper.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.Field;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 public class MinefieldTest {
 	
-	private Minefield aMinefield = new Minefield(5, 5, 5);
+	private final Minefield aMinefield = new Minefield(5, 5, 5);
+	
+	private void setMinedPositions(Set<Position> pMinedPositions) {
+		try {
+			Field field = Minefield.class.getDeclaredField("aMinedPositions");
+			field.setAccessible(true);
+			@SuppressWarnings("unchecked")
+			Set<Position> positions = (Set<Position>)field.get(aMinefield);
+			positions.clear();
+			positions.addAll(pMinedPositions);
+		} 
+		catch (ReflectiveOperationException exception)
+		{
+			fail();
+		}
+	}
 
 	@Test
 	void testGetNumberOfMinesLeft_All() {
@@ -90,5 +111,123 @@ public class MinefieldTest {
 		assertTrue(aMinefield.isFlagged(position));
 		aMinefield.toggleFlag(position);
 		assertFalse(aMinefield.isFlagged(position));
+	}
+	
+	@Test
+	void testIsCleared_True() {
+		aMinefield.toggleFlag(new Position(0,0));
+		aMinefield.toggleFlag(new Position(0,1));
+		aMinefield.toggleFlag(new Position(0,2));
+		aMinefield.toggleFlag(new Position(0,3));
+		aMinefield.toggleFlag(new Position(0,4));
+		assertTrue(aMinefield.isCleared());
+	}
+	
+	@Test
+	void testIsCleared_False() {
+		assertFalse(aMinefield.isCleared());
+	}
+	
+	@Test
+	void testIsExploded_True() {
+		setMinedPositions(Set.of(new Position(0,0)));
+		aMinefield.reveal(new Position(0,0));
+		assertTrue(aMinefield.isExploded());
+	}
+	
+	@Test
+	void testIsExploded_False() {
+		assertFalse(aMinefield.isExploded());
+	}
+	
+	@Test
+	void testReveal_NotMinedNoAutoReveal() {
+		setMinedPositions(Set.of( new Position(0,1)));
+		aMinefield.reveal(new Position(0,0));
+		assertTrue(aMinefield.isRevealed(new Position(0,0)));
+		assertFalse(aMinefield.isRevealed(new Position(0,1)));
+		assertFalse(aMinefield.isRevealed(new Position(1,0)));
+		assertFalse(aMinefield.isRevealed(new Position(1,1)));
+	}
+	
+	@Test
+	void testReveal_Mined() {
+		setMinedPositions(Set.of( new Position(0,0)));
+		aMinefield.reveal(new Position(0,0));
+		for (Position position : aMinefield.getAllPositions()) {
+			assertTrue(aMinefield.isRevealed(position));
+		}
+	}
+	
+	@Test
+	void testReveal_NotMinedAutoReveal() {
+		setMinedPositions(Set.of( new Position(2,0), new Position(3,4)));
+		aMinefield.reveal(new Position(2,2));
+		
+		assertTrue(aMinefield.isRevealed(new Position(0,0)));
+		assertTrue(aMinefield.isRevealed(new Position(0,1)));
+		assertTrue(aMinefield.isRevealed(new Position(0,2)));
+		assertTrue(aMinefield.isRevealed(new Position(0,3)));
+		assertTrue(aMinefield.isRevealed(new Position(0,4)));
+		
+		assertTrue(aMinefield.isRevealed(new Position(1,0)));
+		assertTrue(aMinefield.isRevealed(new Position(1,1)));
+		assertTrue(aMinefield.isRevealed(new Position(1,2)));
+		assertTrue(aMinefield.isRevealed(new Position(1,3)));
+		assertTrue(aMinefield.isRevealed(new Position(1,4)));
+		
+		assertFalse(aMinefield.isRevealed(new Position(2,0)));
+		assertTrue(aMinefield.isRevealed(new Position(2,1)));
+		assertTrue(aMinefield.isRevealed(new Position(2,2)));
+		assertTrue(aMinefield.isRevealed(new Position(2,3)));
+		assertTrue(aMinefield.isRevealed(new Position(2,4)));
+		
+		assertTrue(aMinefield.isRevealed(new Position(3,0)));
+		assertTrue(aMinefield.isRevealed(new Position(3,1)));
+		assertTrue(aMinefield.isRevealed(new Position(3,2)));
+		assertTrue(aMinefield.isRevealed(new Position(3,3)));
+		assertFalse(aMinefield.isRevealed(new Position(3,4)));
+		
+		assertTrue(aMinefield.isRevealed(new Position(4,0)));
+		assertTrue(aMinefield.isRevealed(new Position(4,1)));
+		assertTrue(aMinefield.isRevealed(new Position(4,2)));
+		assertTrue(aMinefield.isRevealed(new Position(4,3)));
+		assertFalse(aMinefield.isRevealed(new Position(4,4)));
+	}
+	
+	@Test
+	void testReveal_NotMinedFlaggedAutoReveal() {
+		setMinedPositions(Set.of( new Position(2,0), new Position(3,4), new Position(2,3)));
+		aMinefield.reveal(new Position(2,2));
+		
+		assertFalse(aMinefield.isRevealed(new Position(0,0)));
+		assertFalse(aMinefield.isRevealed(new Position(0,1)));
+		assertFalse(aMinefield.isRevealed(new Position(0,2)));
+		assertFalse(aMinefield.isRevealed(new Position(0,3)));
+		assertFalse(aMinefield.isRevealed(new Position(0,4)));
+		
+		assertFalse(aMinefield.isRevealed(new Position(1,0)));
+		assertFalse(aMinefield.isRevealed(new Position(1,1)));
+		assertFalse(aMinefield.isRevealed(new Position(1,2)));
+		assertFalse(aMinefield.isRevealed(new Position(1,3)));
+		assertFalse(aMinefield.isRevealed(new Position(1,4)));
+		
+		assertFalse(aMinefield.isRevealed(new Position(2,0)));
+		assertFalse(aMinefield.isRevealed(new Position(2,1)));
+		assertTrue(aMinefield.isRevealed(new Position(2,2)));
+		assertFalse(aMinefield.isRevealed(new Position(2,3)));
+		assertFalse(aMinefield.isRevealed(new Position(2,4)));
+		
+		assertFalse(aMinefield.isRevealed(new Position(3,0)));
+		assertFalse(aMinefield.isRevealed(new Position(3,1)));
+		assertFalse(aMinefield.isRevealed(new Position(3,2)));
+		assertFalse(aMinefield.isRevealed(new Position(3,3)));
+		assertFalse(aMinefield.isRevealed(new Position(3,4)));
+		
+		assertFalse(aMinefield.isRevealed(new Position(4,0)));
+		assertFalse(aMinefield.isRevealed(new Position(4,1)));
+		assertFalse(aMinefield.isRevealed(new Position(4,2)));
+		assertFalse(aMinefield.isRevealed(new Position(4,3)));
+		assertFalse(aMinefield.isRevealed(new Position(4,4)));
 	}
 }
