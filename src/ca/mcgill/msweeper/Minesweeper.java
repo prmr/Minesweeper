@@ -110,7 +110,23 @@ public final class Minesweeper extends Application {
 			aStatusBar.setText("You lost. Press Enter to try again");
 		}
 		else {
-			aStatusBar.setText(aMinefield.getNumberOfMinesLeft() + " mines left");
+			aStatusBar.setText(numberOfMinesLeftMessage());
+		}
+	}
+	
+	private String numberOfMinesLeftMessage() {
+		final int minesLeft = aMinefield.getNumberOfMinesLeft();
+		if (minesLeft > 0) {
+			return minesLeft + " mines left to flag";
+		}
+		else if (minesLeft == 0) {
+			return "All mines have been flagged";
+		}
+		else if (minesLeft == -1) {
+			return -minesLeft + " extra flag used";
+		}
+		else {
+			return -minesLeft + " extra flags used";
 		}
 	}
 

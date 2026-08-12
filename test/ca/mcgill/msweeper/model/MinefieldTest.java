@@ -120,6 +120,9 @@ public class MinefieldTest {
 			if (position.getRow() != position.getColumn()) {
 				aMinefield.reveal(position);
 			}
+			else {
+				aMinefield.toggleFlag(position);
+			}
 		}
 		assertTrue(aMinefield.isCleared());
 	}
@@ -133,6 +136,17 @@ public class MinefieldTest {
 	void testIsCleared_False_Complex() {
 		for (Position position : aMinefield.getAllPositions()) {
 			aMinefield.reveal(position);
+		}
+		assertFalse(aMinefield.isCleared());
+	}
+	
+	@Test
+	void testIsCleared_MissingFlags() {
+		setMinedPositions(Set.of(new Position(0,0), new Position(1,1), new Position(2,2), new Position(3,3), new Position(4,4)));
+		for (Position position : aMinefield.getAllPositions()) {
+			if (position.getRow() != position.getColumn()) {
+				aMinefield.reveal(position);
+			}
 		}
 		assertFalse(aMinefield.isCleared());
 	}

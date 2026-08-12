@@ -132,7 +132,9 @@ public class Minefield {
 	 * @return True if all the unmined positions are cleared.
 	 */
 	public boolean isCleared() {
-		return !isExploded() && aRevealedPositions.size() == aGrid.allPositions().size() - aMinedPositions.size();
+		return !isExploded() && 
+				aRevealedPositions.size() == aGrid.allPositions().size() - aMinedPositions.size() && 
+				aFlaggedPositions.equals(aMinedPositions);
 	}
 	
 	/**
