@@ -115,16 +115,25 @@ public class MinefieldTest {
 	
 	@Test
 	void testIsCleared_True() {
-		aMinefield.toggleFlag(new Position(0,0));
-		aMinefield.toggleFlag(new Position(0,1));
-		aMinefield.toggleFlag(new Position(0,2));
-		aMinefield.toggleFlag(new Position(0,3));
-		aMinefield.toggleFlag(new Position(0,4));
+		setMinedPositions(Set.of(new Position(0,0), new Position(1,1), new Position(2,2), new Position(3,3), new Position(4,4)));
+		for (Position position : aMinefield.getAllPositions()) {
+			if (position.getRow() != position.getColumn()) {
+				aMinefield.reveal(position);
+			}
+		}
 		assertTrue(aMinefield.isCleared());
 	}
 	
 	@Test
-	void testIsCleared_False() {
+	void testIsCleared_False_Simple() {
+		assertFalse(aMinefield.isCleared());
+	}
+	
+	@Test
+	void testIsCleared_False_Complex() {
+		for (Position position : aMinefield.getAllPositions()) {
+			aMinefield.reveal(position);
+		}
 		assertFalse(aMinefield.isCleared());
 	}
 	
