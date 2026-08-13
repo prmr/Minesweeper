@@ -2,13 +2,13 @@
 
 [![Build](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml/badge.svg)](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml)
 
-Sample Java application with JavaFX. Demonstration application used in the book [Introduction to Software Design with Java](https://link.springer.com/book/10.1007/978-3-030-24094-3).
-
-The goal of this project is to help illustrate various design decisions related to abstraction, encapsulation, and information hiding, in the context of a complete working application. The rest of the code has been left to a minimum. Common best practices not implemented here would include externalizing strings and using icons in the UI.
-
-This application was also designed to be simple enough to be realizable without the help of the Observer pattern. Although using the Observer as part of this design would make a sense, the idea here was to have a code base that could be used for discussion without knowing about the Observer pattern.
+A JavaFX version of the classic [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper_(video_game)) video game. A demonstration application for the book [Introduction to Software Design with Java](https://link.springer.com/book/10.1007/978-3-030-24094-3).
 
 ![Screenshot of the Minesweeper application](Minesweeper.png)
+
+## How to Play
+
+The application shows a _minefield_ in the form of a grid. A number of mines are randomly positioned. Click on any cell to reveal it, and possibly blow up if a mine is positioned there. Right-click on a cell to mark the position of a mine. When revealed, a cell indicates the number of mines present in the eight neighboring cells (or blank if there are none). The game is won when all unmined cells are revealed.
 
 ## Building and Running with Maven
 
@@ -41,7 +41,6 @@ If you used Maven to fetch the dependencies, you can simply run the application 
 
 _**MacOs Users**: When you run the application, from the run configuration, make sure the checkbox "Use the -XstartOnFirstThread argument when launching with SWT" is _not_ checked._ 
 
-If you did not run Maven, you must add the JavaFX and JUnit5 dependencies manually. JUnit is available through the project properties's Java Build Path dialog. To add JavaFX:
+## Art Credit
 
-1. Download [JavaFX 21](https://jdk.java.net/javafx21/);
-2. Create a new `User Library` under `Eclipse -> Window -> Preferences -> Java -> Build Path -> User Libraries -> New`. Name it `JavaFX21` and include the jars under the `lib` folder from the location where you extracted the JavaFX download.
+<a href="https://www.flaticon.com/free-icons/mine" title="mine icons">Mine icons created by Creaticca Creative Agency - Flaticon</a>
