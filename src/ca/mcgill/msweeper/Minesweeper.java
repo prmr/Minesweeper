@@ -57,6 +57,7 @@ public final class Minesweeper extends Application {
 	
 	private static final Image IMAGE_FLAG = new Image(Minesweeper.class.getClassLoader().getResourceAsStream("flag-16x16.png"));
 	private static final Image IMAGE_MINE = new Image(Minesweeper.class.getClassLoader().getResourceAsStream("mine-16x16.png"));
+	private static final Image APP_ICON = new Image(Minesweeper.class.getClassLoader().getResourceAsStream("mine-128x128.png"));
 
 	private Minefield aMinefield;
 	private GridPane aGrid;
@@ -86,7 +87,8 @@ public final class Minesweeper extends Application {
 	}
 
 	private void prepareStage(Stage pStage) {
-		pStage.setTitle("Minesweeper");
+		pStage.setTitle("Minesweeper 1.2");
+		pStage.getIcons().add(APP_ICON);
 		pStage.setResizable(false);
 	}
 
