@@ -23,7 +23,6 @@ package ca.mcgill.msweeper;
 import ca.mcgill.msweeper.model.Minefield;
 import ca.mcgill.msweeper.model.Position;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -32,7 +31,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -63,7 +61,7 @@ public final class Minesweeper extends Application {
 	private Minefield aMinefield;
 	private GridPane aGrid;
 	private Label aStatusBar;
-
+	
 	/**
 	 * Initializes the application.
 	 */
@@ -93,8 +91,18 @@ public final class Minesweeper extends Application {
 	}
 
 	private void newGame() {
+		deinstallNewGameClickEvent();
 		aMinefield = new Minefield(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES);
 		refresh();
+	}
+	
+	@SuppressWarnings("unused")
+	private void installNewGameClickEvent() {
+		aGrid.getParent().setOnMouseClicked(e -> newGame());
+	}
+	
+	private void deinstallNewGameClickEvent() {
+		aGrid.getParent().setOnMouseClicked(null);
 	}
 
 	private void refresh() {
@@ -104,10 +112,12 @@ public final class Minesweeper extends Application {
 			aGrid.add(createTile(position), position.getColumn(), position.getRow());
 		}
 		if (aMinefield.isCleared()) {
-			aStatusBar.setText("You won! Press Enter to play again");
+			aStatusBar.setText("You won! Click to play again");
+			installNewGameClickEvent();
 		}
 		else if (aMinefield.isExploded()) {
-			aStatusBar.setText("You lost. Press Enter to try again");
+			aStatusBar.setText("You lost. Click to try again");
+			installNewGameClickEvent();
 		}
 		else {
 			aStatusBar.setText(numberOfMinesLeftMessage());
@@ -143,18 +153,6 @@ public final class Minesweeper extends Application {
 		aGrid.setVgap(1);
 		aGrid.setAlignment(Pos.CENTER);
 		aGrid.setPadding(new Insets(PADDING));
-
-		root.setOnKeyTyped(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(final KeyEvent pEvent) {
-				if (pEvent.getCharacter().equals("\r")) {
-					newGame();
-					refresh();
-				}
-				pEvent.consume();
-			}
-		});
-
 		return new Scene(root);
 	}
 
