@@ -1,6 +1,6 @@
 # Minesweeper
 
-[![Build](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml/badge.svg)](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml)
+[![Build](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml/badge.svg)](https://github.com/prmr/Minesweeper/actions/workflows/maven.yml) [![Checkstyle](https://github.com/prmr/Minesweeper/actions/workflows/checkstyle.yml/badge.svg)](https://github.com/prmr/Minesweeper/actions/workflows/checkstyle.yml)
 
 A JavaFX version of the classic [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper_(video_game)) video game. A demonstration application for the book [Introduction to Software Design with Java](https://link.springer.com/book/10.1007/978-3-030-24094-3).
 
