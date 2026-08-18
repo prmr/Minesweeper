@@ -1,0 +1,12 @@
+name: Checkstyle
+
+on: push
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest # windows-latest, macos-latest
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Run the Checkstyle Maven plugin
+      run: mvn -B checkstyle:check
